@@ -2197,6 +2197,11 @@ bool PasswordSafeFrame::IsClosed() const
           !m_core.HasDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
+bool PasswordSafeFrame::IsLocked() const
+{
+  return m_sysTray->IsLocked();
+}
+
 void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
 {
   // assumption: the view get updated on switching between each other,
@@ -2565,8 +2570,10 @@ void PasswordSafeFrame::IconizeOrHideAndLock()
   bool bModalOpen = false;
   
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    bModalOpen = (CountTopLevelWindowRecursively(this) > 1);
-    HideUI(true);
+    if (!m_sysTray->IsLocked()) {
+      bModalOpen = (CountTopLevelWindowRecursively(this) > 1);
+      HideUI(true);
+    }
   }
   else {
     TryIconize();
