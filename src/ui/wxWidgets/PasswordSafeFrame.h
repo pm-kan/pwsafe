@@ -775,6 +775,9 @@ private:
   wxAuiManager m_AuiManager;
   wxAuiToolBar* m_Toolbar;
   DragBarCtrl* m_Dragbar;
+
+  // top-level windows that we hid while locking the UI
+  wxWindowList hiddenWindows;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
