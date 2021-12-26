@@ -46,7 +46,7 @@ BEGIN_EVENT_TABLE( ExportTextWarningDlgBase, wxDialog )
 #endif
 END_EVENT_TABLE()
 
-ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
+ExportTextWarningDlgBase::ExportTextWarningDlgBase() : wxDialog(nullptr, wxID_ANY, wxEmptyString,
                       wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
   selCriteria(new SelectionCriteria), m_combinationEntry(nullptr), m_pollingTimer(nullptr)
@@ -170,7 +170,7 @@ ExportTextWarningDlgBase::~ExportTextWarningDlgBase()
 void ExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
 {
   UNREFERENCED_PARAMETER(evt);
-  DoAdvancedSelection();
+  CallAfter(&ExportTextWarningDlgBase::DoAdvancedSelection);
 }
 
 #ifndef NO_YUBI

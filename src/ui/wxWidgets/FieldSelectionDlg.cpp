@@ -47,16 +47,15 @@ BEGIN_EVENT_TABLE( FieldSelectionDlg, wxDialog )
   EVT_COMMAND(wxID_ANY, EVT_RELAYOUT_DLG, FieldSelectionDlg::OnRelayoutDlg)
 END_EVENT_TABLE()
 
-FieldSelectionDlg::FieldSelectionDlg(wxWindow* parent,
-                                     const CItemData::FieldType* available, size_t navail,
+FieldSelectionDlg::FieldSelectionDlg(const CItemData::FieldType* available, size_t navail,
                                      const CItemData::FieldType* mandatory, size_t nmandatory,
                                      FieldSet& userSelection,
                                      const wxString& operation,
-                                     const wxString& dlgtitle/* = wxEmptyString*/,
-                                     const wxString& dlgText/* = wxEmptyString*/,
-                                     const wxString& vMsg/* = wxEmptyString*/, 
-                                     const wxString& vTitle/* = wxEmptyString*/)
-                                      :wxDialog(parent, wxID_ANY, FieldSelTitle(dlgtitle, operation),
+                                     const wxString& dlgtitle,
+                                     const wxString& dlgText,
+                                     const wxString& vMsg, 
+                                     const wxString& vTitle)
+                                      :wxDialog(nullptr, wxID_ANY, FieldSelTitle(dlgtitle, operation),
                                                 wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
@@ -80,6 +79,16 @@ FieldSelectionDlg::FieldSelectionDlg(wxWindow* parent,
     dlgSizer->Add(btnSizer, wxSizerFlags(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin));
   dlgSizer->AddSpacer(BottomMargin);
   SetSizer(dlgSizer);
+}
+
+FieldSelectionDlg* FieldSelectionDlg::Create(const CItemData::FieldType* available, size_t navail,
+                                     const CItemData::FieldType* mandatory, size_t nmandatory,
+                                     FieldSet& userSelection, const wxString& operation,
+                                     const wxString& dlgtitle, const wxString& dlgText, 
+                                     const wxString& vMsg, const wxString& vTitle)
+{
+  return new FieldSelectionDlg(available, navail, mandatory, nmandatory,
+                              userSelection, operation, dlgtitle, dlgText, vMsg, vTitle);
 }
 
 void FieldSelectionDlg::OnInitDialog(wxInitDialogEvent& evt)

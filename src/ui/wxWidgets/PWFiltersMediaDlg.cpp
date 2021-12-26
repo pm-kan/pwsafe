@@ -64,33 +64,14 @@ END_EVENT_TABLE()
  * pwFiltersMediaTypesDlg constructors
  */
 
-pwFiltersMediaTypesDlg::pwFiltersMediaTypesDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, wxString &value, bool &fcase, const std::set<StringX> *psMediaTypes)
-: m_ftype(ftype), m_psMediaTypes(psMediaTypes), m_add_present(false)
+pwFiltersMediaTypesDlg::pwFiltersMediaTypesDlg(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes)
+: m_ftype(ftype), m_psMediaTypes(psMediaTypes),
+  m_prule(rule), m_pvalue(value), m_pfcase(fcase)
 {
-  m_prule = &rule;
-  m_pvalue = &value;
-  m_pfcase = &fcase;
-
   Init();
-  Create(parent);
-}
-
-/*!
- * pwFiltersMediaTypesDlg destructor
- */
-
-pwFiltersMediaTypesDlg::~pwFiltersMediaTypesDlg()
-{
-}
-
-/*!
- * pwFiltersMediaTypesDlg creator
- */
-
-bool pwFiltersMediaTypesDlg::Create(wxWindow* parent)
-{
+  
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(parent, wxID_ANY, _("Display Filter Media Types Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(nullptr, wxID_ANY, _("Display Filter Media Types Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -99,7 +80,11 @@ bool pwFiltersMediaTypesDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersMediaTypesDlg* pwFiltersMediaTypesDlg::Create(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes)
+{
+  return new pwFiltersMediaTypesDlg(ftype, rule, value, fcase, psMediaTypes);
 }
 
 /*!
@@ -235,10 +220,6 @@ void pwFiltersMediaTypesDlg::SetValidators()
 
 void pwFiltersMediaTypesDlg::Init()
 {
-  m_ComboBox = nullptr;
-  m_MediaTypes = nullptr;
-  m_idx = -1;
-  
   switch (m_ftype) {
     case AT_MEDIATYPE:
       m_add_present = false;

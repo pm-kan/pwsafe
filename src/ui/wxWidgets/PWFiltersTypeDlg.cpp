@@ -65,32 +65,13 @@ END_EVENT_TABLE()
  * pwFiltersTypeDlg constructors
  */
 
-pwFiltersTypeDlg::pwFiltersTypeDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, CItemData::EntryType &etype)
-: m_ftype(ftype)
+pwFiltersTypeDlg::pwFiltersTypeDlg(FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype)
+: m_ftype(ftype), m_prule(rule), m_petype(etype)
 {
-  m_prule = &rule;
-  m_petype = &etype;
+  m_etype = *m_petype;
 
-  Init();
-  Create(parent);
-}
-
-/*!
- * pwFiltersTypeDlg destructor
- */
-
-pwFiltersTypeDlg::~pwFiltersTypeDlg()
-{
-}
-
-/*!
- * pwFiltersTypeDlg creator
- */
-
-bool pwFiltersTypeDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(parent, wxID_ANY, _("Display Filter Entry Type Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(nullptr, wxID_ANY, _("Display Filter Entry Type Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -99,7 +80,11 @@ bool pwFiltersTypeDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersTypeDlg* pwFiltersTypeDlg::Create(FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype)
+{
+  return new pwFiltersTypeDlg(ftype, rule, etype);
 }
 
 /*!
@@ -207,19 +192,6 @@ void pwFiltersTypeDlg::SetValidators()
 {
   m_ComboBoxRule->SetValidator(wxGenericValidator(&m_idx));
   m_ComboBoxType->SetValidator(wxGenericValidator(&m_idx_type));
-}
-
-/*!
- * Member initialisation
- */
-
-void pwFiltersTypeDlg::Init()
-{
-  m_ComboBoxRule = nullptr;
-  m_ComboBoxType = nullptr;
-  m_idx = -1;
-  m_idx_type = -1;
-  m_etype = *m_petype;
 }
 
 /*!

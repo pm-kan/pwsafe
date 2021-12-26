@@ -58,30 +58,13 @@ END_EVENT_TABLE()
  * EditShortcutDlg constructors
  */
 
-EditShortcutDlg::EditShortcutDlg(wxWindow* parent, PWScore &core, CItemData *shortcut)
+EditShortcutDlg::EditShortcutDlg(PWScore &core, CItemData *shortcut)
 : m_Core(core), m_Shortcut(shortcut)
 {
   ASSERT(m_Shortcut != nullptr);
-  Init();
-  Create(parent);
-}
 
-/*!
- * EditShortcutDlg destructor
- */
-
-EditShortcutDlg::~EditShortcutDlg()
-{
-}
-
-/*!
- * EditShortcutDlg creator
- */
-
-bool EditShortcutDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(parent, wxID_ANY, _("Edit Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(nullptr, wxID_ANY, _("Edit Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -92,7 +75,12 @@ bool EditShortcutDlg::Create(wxWindow* parent)
   SetValidators();
   UpdateControls();
   ItemFieldsToDialog();
-  return true;
+
+}
+
+EditShortcutDlg* EditShortcutDlg::Create(PWScore &core, CItemData *shortcut)
+{
+  return new EditShortcutDlg(core, shortcut);
 }
 
 void EditShortcutDlg::ItemFieldsToDialog()
@@ -224,24 +212,6 @@ void EditShortcutDlg::UpdateControls()
     m_TextCtrlShortcutTitle->Disable();
     m_TextCtrlShortcutUsername->Disable();
   }
-}
-
-/*!
- * Member initialisation
- */
-
-void EditShortcutDlg::Init()
-{
-  m_ComboBoxShortcutGroup = nullptr;
-  m_TextCtrlShortcutTitle = nullptr;
-  m_TextCtrlShortcutUsername = nullptr;
-  m_StaticTextShortcutCreated = nullptr;
-  m_StaticTextShortcutChanged = nullptr;
-  m_StaticTextShortcutAccessed = nullptr;
-  m_StaticTextShortcutAnyChange = nullptr;
-  m_StaticTextBaseEntryGroup = nullptr;
-  m_StaticTextBaseEntryTitle = nullptr;
-  m_StaticTextBaseEntryUsername = nullptr;
 }
 
 /*!

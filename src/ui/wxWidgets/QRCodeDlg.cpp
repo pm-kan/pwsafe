@@ -39,16 +39,22 @@ BEGIN_EVENT_TABLE(QRCodeDlg, wxDialog)
   EVT_TIMER(wxID_ANY, QRCodeDlg::OnTimer)
 END_EVENT_TABLE()
 
-QRCodeDlg::QRCodeDlg(wxWindow *parent,
-                     const StringX &data,
+QRCodeDlg::QRCodeDlg(const StringX &data,
                      const wxString &dlgTitle,
                      const int seconds,
                      const wxPoint &pos,
                      const wxSize &size,
                      long style,
-                     const wxString &name) : wxDialog(parent, wxID_ANY, dlgTitle, pos, size, style, name), timer(this), secondsRemaining(seconds)
+                     const wxString &name) : wxDialog(nullptr, wxID_ANY, dlgTitle, pos, size, style, name), timer(this), secondsRemaining(seconds)
 {
   CreateControls(data);
+}
+
+QRCodeDlg* QRCodeDlg::Create(const StringX &data, const wxString &dlgTitle,
+                     const int seconds, const wxPoint &pos,
+                     const wxSize &size, long style, const wxString &name)
+{
+  return new QRCodeDlg(data, dlgTitle, seconds, pos, size, style, name);
 }
 
 void QRCodeDlg::CreateControls(const StringX &data)
@@ -148,8 +154,7 @@ public:
     }
     else
     {
-      QRCodeDlg dlg(nullptr, StringX(argv[1]), "Scan this QR Code and comapre with the program argument");
-      dlg.ShowModal();
+      ShowModalAndGetResult<QRCodeDlg>(StringX(argv[1]), "Scan this QR Code and comapre with the program argument");
       // Normall we return true here
       return false;
     }

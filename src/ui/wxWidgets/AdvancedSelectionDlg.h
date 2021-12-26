@@ -142,9 +142,13 @@ class AdvancedSelectionDlg : public wxDialog
   PanelType* m_panel;
 
 public:
-  AdvancedSelectionDlg(wxWindow* parent, SelectionCriteria* existingCriteria): m_panel(nullptr)
+  static AdvancedSelectionDlg<DlgType>* Create(SelectionCriteria* existingCriteria) {
+    return new AdvancedSelectionDlg(existingCriteria);
+  }
+protected:
+  explicit AdvancedSelectionDlg(SelectionCriteria* existingCriteria): m_panel(nullptr)
   {
-    wxDialog::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
+    wxDialog::Create(nullptr, wxID_ANY, wxEmptyString, wxDefaultPosition, 
                             wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
   
 

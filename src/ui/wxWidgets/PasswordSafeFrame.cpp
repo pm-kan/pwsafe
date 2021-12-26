@@ -1348,10 +1348,12 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // prompt for password, try to Load.
-  SafeCombinationPromptDlg pwdprompt(this, m_core, fname, false);
-  if (pwdprompt.ShowModal() == wxID_OK) {
+  DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(m_core, fname, false);
+  SafeCombinationPromptDlg* pwdprompt = pwdpromptWrapper.Get();
+
+  if (pwdprompt->ShowModal() == wxID_OK) {
     m_core.SetCurFile(tostringx(fname));
-    StringX password = pwdprompt.GetPassword();
+    StringX password = pwdprompt->GetPassword();
     int retval = Load(password);
     if (retval == PWScore::SUCCESS) {
       m_InitialTreeDisplayStatusAtOpen = true;
@@ -1529,9 +1531,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 
 void PasswordSafeFrame::OnAboutClick(wxCommandEvent& WXUNUSED(evt))
 {
-  AboutDlg* window = new AboutDlg(this);
-  window->ShowModal();
-  window->Destroy();
+  ShowModalAndGetResult<AboutDlg>();
 }
 
 /*!
@@ -1559,6 +1559,11 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 }
 
 void PasswordSafeFrame::OnEditBase(wxCommandEvent& WXUNUSED(evt))
+{
+  CallAfter(&PasswordSafeFrame::DoEditBase);
+}
+
+void PasswordSafeFrame::DoEditBase()
 {
   CItemData* item = GetSelectedEntry();
   if (item && item->IsDependent()) {
@@ -2384,12 +2389,13 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
 
   if (m_sysTray->IsLocked()) {
     // Allow Exit in all cases (if dialog vetoed close, we'll stop on it)
-    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), true);
+    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(m_core, towxstring(m_core.GetCurFile()), true);
+    SafeCombinationPromptDlg* scp = scpWrapper.Get();
 
-    switch (scp.ShowModal()) {
+    switch (scp->ShowModal()) {
       case (wxID_OK):
       {
-        if (ReloadDatabase(scp.GetPassword())) {
+        if (ReloadDatabase(scp->GetPassword())) {
           m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
         }
         else {
@@ -2488,11 +2494,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
     }
   }
   else{
-#if wxCHECK_VERSION(2,9,5)
       CallAfter(&PasswordSafeFrame::UnlockSafe, true, true);
-#else
-      UnlockSafe(true, true);
-#endif
   }
 }
 
@@ -2624,8 +2626,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 
 void PasswordSafeFrame::ViewReport(CReport& rpt)
 {
-  ViewReportDlg vr(this, &rpt);
-  vr.ShowModal();
+  ShowModalAndGetResult<ViewReportDlg>(&rpt);
 }
 
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)

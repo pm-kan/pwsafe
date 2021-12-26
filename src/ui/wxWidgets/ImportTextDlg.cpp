@@ -52,7 +52,7 @@ IMPLEMENT_CLASS( ImportTextDlg, wxDialog )
 BEGIN_EVENT_TABLE( ImportTextDlg, wxDialog )
 END_EVENT_TABLE()
 
-ImportTextDlg::ImportTextDlg(wxWindow* parent, const wxString filename) :  wxDialog(parent,
+ImportTextDlg::ImportTextDlg(const wxString& filename) :  wxDialog(nullptr,
                                                             wxID_ANY,
                                                             _("Import Text Settings"),
                                                             wxDefaultPosition,
@@ -74,10 +74,11 @@ ImportTextDlg::ImportTextDlg(wxWindow* parent, const wxString filename) :  wxDia
   CreateControls();
 }
 
-ImportTextDlg::~ImportTextDlg()
+ImportTextDlg* ImportTextDlg::Create(const wxString& filename)
 {
+  return new ImportTextDlg(filename);
 }
-
+                                                                  
 wxCollapsiblePane* ImportTextDlg::CreateImportOptionsPane(wxBoxSizer* dlgSizer)
 {
   const wxSizerFlags Left = wxSizerFlags().Proportion(0).Border(wxLEFT, SideMargin);

@@ -67,22 +67,13 @@ END_EVENT_TABLE()
  * YubiCfgDlg constructors
  */
 
-YubiCfgDlg::YubiCfgDlg( wxWindow* parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+YubiCfgDlg::YubiCfgDlg(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 : m_core(core)
 {
   Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * YubiCfgDlg creator
- */
-
-bool YubiCfgDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin YubiCfgDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( parent, id, caption, pos, size, style );
+  wxDialog::Create( nullptr, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -92,7 +83,11 @@ bool YubiCfgDlg::Create( wxWindow* parent, wxWindowID id, const wxString& captio
   Centre();
 ////@end YubiCfgDlg creation
   HideSK();
-  return true;
+}
+
+YubiCfgDlg* YubiCfgDlg::Create(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+{
+  return new YubiCfgDlg(core, id, caption, pos, size, style);
 }
 
 /*!
@@ -112,11 +107,6 @@ YubiCfgDlg::~YubiCfgDlg()
 
 void YubiCfgDlg::Init()
 {
-////@begin YubiCfgDlg member initialisation
-  m_SKSizer = nullptr;
-  m_SKCtrl = nullptr;
-  m_ykstatus = nullptr;
-////@end YubiCfgDlg member initialisation
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
   m_yksernum = m_yksk = wxEmptyString;

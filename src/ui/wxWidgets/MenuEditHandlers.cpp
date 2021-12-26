@@ -65,17 +65,14 @@ void PasswordSafeFrame::DoEdit(CItemData item)
   if (!item.IsShortcut()) {
     bool isItemReadOnly = m_core.IsReadOnly() || item.IsProtected();
 
-    AddEditPropSheetDlg dialog(
-      this, m_core,
+    returnCode = ShowModalAndGetResult<AddEditPropSheetDlg>(
+      m_core,
       isItemReadOnly ? AddEditPropSheetDlg::SheetType::VIEW : AddEditPropSheetDlg::SheetType::EDIT,
       &item
     );
-
-    returnCode = dialog.ShowModal();
   }
   else {
-    EditShortcutDlg dialog(this, m_core, &item);
-    returnCode = dialog.ShowModal();
+    returnCode = ShowModalAndGetResult<EditShortcutDlg>(m_core, &item);
   }
 
   if (returnCode == wxID_OK) {
@@ -110,8 +107,8 @@ void PasswordSafeFrame::OnAddClick(wxCommandEvent& WXUNUSED(evt))
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
-  AddEditPropSheetDlg addDbox(this, m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
-  if (addDbox.ShowModal() == wxID_OK) {
+  int rc = ShowModalAndGetResult<AddEditPropSheetDlg>(m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
+  if (rc == wxID_OK) {
     UpdateStatusBar();
   }
 }
@@ -123,8 +120,9 @@ void PasswordSafeFrame::OnAddClick(wxCommandEvent& WXUNUSED(evt))
 void PasswordSafeFrame::OnEditClick(wxCommandEvent& WXUNUSED(evt))
 {
   CItemData *item = GetSelectedEntry();
-  if (item != nullptr)
-    DoEdit(*item);
+  if (item) {
+    CallAfter(&PasswordSafeFrame::DoEdit, *item);
+  }
 }
 
 /*!
@@ -136,7 +134,6 @@ void PasswordSafeFrame::OnDeleteClick(wxCommandEvent& WXUNUSED(evt))
   bool dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
 
-  bool dodelete = true;
   int num_children = 0;
   // If tree view, check if group selected
   if (m_tree->IsShown()) {
@@ -150,16 +147,24 @@ void PasswordSafeFrame::OnDeleteClick(wxCommandEvent& WXUNUSED(evt))
     if (num_children > 0) // ALWAYS confirm group delete
       dontaskquestion = false;
   }
+  CallAfter(&PasswordSafeFrame::DoDeleteItems, !dontaskquestion, num_children);
+}
 
+void PasswordSafeFrame::DoDeleteItems(bool askConfirmation, int num_children)
+{  
+  bool dodelete = true;
   //Confirm whether to delete the item
-  if (!dontaskquestion) {
-    DeleteConfirmationDlg deleteDlg(this, num_children);
-    deleteDlg.SetConfirmdelete(PWSprefs::GetInstance()->GetPref(PWSprefs::DeleteQuestion));
-    int rc = deleteDlg.ShowModal();
+  if (askConfirmation) {
+    DestroyWrapper<DeleteConfirmationDlg> deleteDlgWrapper(num_children);
+    DeleteConfirmationDlg* deleteDlg = deleteDlgWrapper.Get();
+    deleteDlg->SetConfirmdelete(PWSprefs::GetInstance()->GetPref(PWSprefs::DeleteQuestion));
+    int rc = deleteDlg->ShowModal();
     if (rc != wxID_YES) {
       dodelete = false;
     }
-    PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion, deleteDlg.GetConfirmdelete());
+    if (!IsCloseInProgress()) {
+      PWSprefs::GetInstance()->SetPref(PWSprefs::DeleteQuestion, deleteDlg->GetConfirmdelete());
+    }
   }
 
   if (dodelete) {
@@ -546,10 +551,11 @@ void PasswordSafeFrame::OnViewAttachment(wxCommandEvent& WXUNUSED(evt))
     return;
   }
 
-  ViewAttachmentDlg viewAttachmentDlg(this);
+  DestroyWrapper<ViewAttachmentDlg> viewAttachmentDlgWrapper;
+  ViewAttachmentDlg *viewAttachmentDlg = viewAttachmentDlgWrapper.Get();
 
-  if (viewAttachmentDlg.LoadImage(itemAttachment)) {
-    viewAttachmentDlg.ShowModal();
+  if (viewAttachmentDlg->LoadImage(itemAttachment)) {
+    viewAttachmentDlg->ShowModal();
   }
   else {
     wxMessageDialog(
@@ -580,13 +586,16 @@ void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& WXUNUSED(event))
 {
   CItemData* item = GetSelectedEntry();
   if (item && !item->IsDependent()) {
-    CreateShortcutDlg dlg(this, m_core, item);
-    int rc = dlg.ShowModal();
-    if (rc == wxID_OK) {
-      UpdateAccessTime(*item);
-      Show(true);
-      UpdateStatusBar();
-    }
+    CallAfter(&PasswordSafeFrame::DoCreateShortcut, item);
+  }
+}
+
+void PasswordSafeFrame::DoCreateShortcut(CItemData* item)
+{
+  if (ShowModalAndGetResult<CreateShortcutDlg>(m_core, item) == wxID_OK) {
+    UpdateAccessTime(*item);
+    Show(true);
+    UpdateStatusBar();
   }
 }
 
@@ -1044,11 +1053,12 @@ void PasswordSafeFrame::DoEmail(CItemData& item )
   }
 }
 
-void PasswordSafeFrame::DoPasswordSubset(CItemData& item )
+void PasswordSafeFrame::DoPasswordSubset(CItemData* item)
 {
-  PasswordSubsetDlg psDlg(this, item.GetPassword());
-  psDlg.ShowModal();
-  UpdateAccessTime(item);
+  if (item) {
+    ShowModalAndGetResult<PasswordSubsetDlg>(item->GetPassword());
+    UpdateAccessTime(*item);
+  }
 }
 
 void PasswordSafeFrame::OnUndo(wxCommandEvent& evt)
@@ -1069,8 +1079,9 @@ void PasswordSafeFrame::OnPasswordSubset(wxCommandEvent &evt)
 {
   CItemData rueItem;
   CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoPasswordSubset(*item);
+  if (item) {
+    CallAfter(&PasswordSafeFrame::DoPasswordSubset, item);
+  }
 }
 
 void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
@@ -1079,16 +1090,22 @@ void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
     CItemData rueItem;
     CItemData* item = GetSelectedEntry(evt, rueItem);
     if (item != nullptr) {
-#ifndef NO_QR
-    QRCodeDlg dlg(this, item->GetPassword(),
-              towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
-              towxstring(item->GetGroup()) +
-              _T('[') + towxstring(item->GetTitle()) + _T(']') +
-              _T(':') + towxstring(item->GetUser()));
-      dlg.ShowModal();
-#endif
+      CallAfter(&PasswordSafeFrame::DoPasswordQRCode, item);
     }
   }
+}
+
+void PasswordSafeFrame::DoPasswordQRCode(CItemData* item)
+{
+#ifndef NO_QR
+  if (item) {
+    ShowModalAndGetResult<QRCodeDlg>(item->GetPassword(),
+            towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
+            towxstring(item->GetGroup()) +
+            _T('[') + towxstring(item->GetTitle()) + _T(']') +
+            _T(':') + towxstring(item->GetUser()));
+  }
+#endif
 }
 
 /*!

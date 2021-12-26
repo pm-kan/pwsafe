@@ -66,25 +66,15 @@ END_EVENT_TABLE()
  * SafeCombinationChangeDlg constructors
  */
 
-SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow* parent, PWScore &core,
+SafeCombinationChangeDlg::SafeCombinationChangeDlg(PWScore &core,
                                                wxWindowID id, const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
 : m_core(core)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * SafeCombinationChangeDlg creator
- */
-
-bool SafeCombinationChangeDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin SafeCombinationChangeDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( parent, id, caption, pos, size, style );
+  wxDialog::Create( nullptr, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -103,7 +93,13 @@ bool SafeCombinationChangeDlg::Create( wxWindow* parent, wxWindowID id, const wx
   m_pollingTimer = new wxTimer(this, YubiMixin::POLLING_TIMER_ID);
   m_pollingTimer->Start(2*YubiMixin::POLLING_INTERVAL); // 2 controls
 #endif
-  return true;
+}
+
+
+SafeCombinationChangeDlg* SafeCombinationChangeDlg::Create(PWScore &core,
+  wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
+{
+  return new SafeCombinationChangeDlg(core, id, caption, pos, size, style);
 }
 
 /*!
@@ -117,24 +113,6 @@ SafeCombinationChangeDlg::~SafeCombinationChangeDlg()
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
-}
-
-/*!
- * Member initialisation
- */
-
-void SafeCombinationChangeDlg::Init()
-{
-////@begin SafeCombinationChangeDlg member initialisation
-  m_oldPasswdEntry = nullptr;
-  m_newPasswdEntry = nullptr;
-  m_confirmEntry = nullptr;
-#ifndef NO_YUBI
-  m_YubiBtn = nullptr;
-  m_YubiBtn2 = nullptr;
-  m_yubiStatusCtrl = nullptr;
-#endif
-////@end SafeCombinationChangeDlg member initialisation
 }
 
 /*!

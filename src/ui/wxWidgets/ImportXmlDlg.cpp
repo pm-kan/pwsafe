@@ -28,7 +28,7 @@
 
 IMPLEMENT_CLASS( ImportXmlDlg, wxDialog )
 
-ImportXmlDlg::ImportXmlDlg(wxWindow* parent, const wxString filename) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
+ImportXmlDlg::ImportXmlDlg(const wxString& filename) : wxDialog(nullptr, wxID_ANY, wxString(_("Import XML Settings"))),
                                                   importUnderGroup(false), 
                                                   importPasswordsOnly(false),
                                                   filepath(filename)
@@ -73,6 +73,11 @@ ImportXmlDlg::ImportXmlDlg(wxWindow* parent, const wxString filename) : wxDialog
   dlgSizer->AddSpacer(BottomMargin);
   
   SetSizerAndFit(dlgSizer);
+}
+
+ImportXmlDlg* ImportXmlDlg::Create(const wxString& filename)
+{
+  return new ImportXmlDlg(filename);
 }
 
 wxCheckBox* ImportXmlDlg::CheckBox(const wxString& label, bool* validatorTarget)
