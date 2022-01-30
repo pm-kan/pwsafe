@@ -226,6 +226,12 @@ protected:
   
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOk(wxCommandEvent &event);
+  
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
+  void OnCancel(wxCommandEvent &event);
+  
+  /// wxEVT_CLOSE event handler
+  void OnClose(wxCloseEvent &event);
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
   void OnAtLeastPasswordChars(wxSpinEvent &event);
@@ -300,6 +306,7 @@ private:
   bool ValidateBasicData();
   bool ValidatePasswordPolicy();
   bool IsGroupUsernameTitleCombinationUnique();
+  bool QueryCancel(bool showDialog) const;
 
   Command* NewAddEntryCommand(bool bNewCTime = true);
   Command* NewEditEntryCommand();

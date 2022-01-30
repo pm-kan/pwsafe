@@ -49,7 +49,9 @@ IMPLEMENT_CLASS( AddEditPropSheetDlg, wxPropertySheetDialog )
 
 BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
 
+  EVT_CLOSE(                                 AddEditPropSheetDlg::OnClose                   )
   EVT_BUTTON(       wxID_OK,                 AddEditPropSheetDlg::OnOk                      )
+  EVT_BUTTON(       wxID_CANCEL,             AddEditPropSheetDlg::OnCancel                  )
 ////@begin AddEditPropSheetDlg event table entries
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnShowHideClick           )
   EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
@@ -3152,3 +3154,45 @@ void AddEditPropSheetDlg::OnLowercaseCB( wxCommandEvent& event )
 {
   m_PasswordPolicyLowerCaseMinCtrl->Enable(event.IsChecked());
 }
+
+bool AddEditPropSheetDlg::QueryCancel(bool showDialog) const {
+  // when edit forbidden, allow cancel without additional checks
+  if (m_Type == SheetType::VIEW || m_Core.IsReadOnly() || m_Item.IsProtected()) {
+    return true;
+  }
+  else if (changed) {
+    if (showDialog) {
+      auto res = wxMessageDialog(
+        nullptr,
+        _("One or more preferences have been changed. Are you sure you wish to cancel?"), wxEmptyString,
+        wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION  
+      ).ShowModal();
+      if (res == wxID_YES) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return true;
+}
+
+void AddEditPropSheetDlg::OnCancel(wxCommandEvent& WXUNUSED(evt))
+{
+  if (QueryCancel(true)) {
+    EndModal(wxID_CANCEL);
+  }
+}
+
+/// wxEVT_CLOSE event handler
+void AddEditPropSheetDlg::OnClose(wxCloseEvent &event)
+{
+  if (event.CanVeto()) {
+    // when trying to closing app/db, don't ask questions when data changed
+    if (!QueryCancel(!IsCloseInProgress())) {
+      event.Veto();
+      return;
+    }
+  }
+  event.Skip();
+}
+  void OnClose(wxCloseEvent &event);
