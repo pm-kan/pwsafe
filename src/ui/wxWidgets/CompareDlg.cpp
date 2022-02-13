@@ -104,7 +104,7 @@ CompareDlg::CompareDlg(PWScore* currentCore): wxDialog(nullptr,
                                                         m_conflicts(new ComparisonData),
                                                         m_identical(new ComparisonData)
 {
-  SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
+  SetExtraStyle(GetExtraStyle() | wxWS_EX_VALIDATE_RECURSIVELY);
 
   //compare all fields by default
   m_selCriteria->SelectAllFields();
