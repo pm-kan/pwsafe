@@ -3248,12 +3248,12 @@ void AddEditPropSheetDlg::OnLowercaseCB( wxCommandEvent& event )
   m_PasswordPolicyLowerCaseMinCtrl->Enable(event.IsChecked());
 }
 
-bool AddEditPropSheetDlg::QueryCancel(bool showDialog) const {
+bool AddEditPropSheetDlg::SyncAndQueryCancel(bool showDialog) {
   // when edit forbidden, allow cancel without additional checks
   if (m_Type == SheetType::VIEW || m_Core.IsReadOnly() || m_Item.IsProtected()) {
     return true;
   }
-  else if (GetChanges() != Changes::None) {
+  else if (!(Validate() && TransferDataFromWindow()) || GetChanges() != Changes::None) {
     if (showDialog) {
       auto res = wxMessageDialog(
         nullptr,
@@ -3271,7 +3271,7 @@ bool AddEditPropSheetDlg::QueryCancel(bool showDialog) const {
 
 void AddEditPropSheetDlg::OnCancel(wxCommandEvent& WXUNUSED(evt))
 {
-  if (QueryCancel(true)) {
+  if (SyncAndQueryCancel(true)) {
     EndModal(wxID_CANCEL);
   }
 }
@@ -3281,10 +3281,10 @@ void AddEditPropSheetDlg::OnClose(wxCloseEvent &event)
 {
   if (event.CanVeto()) {
     // when trying to closing app/db, don't ask questions when data changed
-    if (!QueryCancel(!IsCloseInProgress())) {
+    if (!SyncAndQueryCancel(!IsCloseInProgress())) {
       event.Veto();
       return;
     }
   }
-  event.Skip();
+  EndDialog(wxID_CANCEL); // cancel directly (if we skip event, OnCancel will be called and ask one more time)
 }

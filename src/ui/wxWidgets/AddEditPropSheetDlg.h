@@ -306,7 +306,7 @@ private:
   bool ValidateBasicData();
   bool ValidatePasswordPolicy();
   bool IsGroupUsernameTitleCombinationUnique();
-  bool QueryCancel(bool showDialog) const;
+  bool SyncAndQueryCancel(bool showDialog);
   
   enum Changes : uint32_t {
     None = 0,
