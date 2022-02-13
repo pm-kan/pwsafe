@@ -70,14 +70,14 @@ class SafeCombinationSetupDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static SafeCombinationSetupDlg* Create(wxWindowID id = SYMBOL_SAFECOMBINATIONSETUPDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONSETUPDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONSETUPDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONSETUPDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONSETUPDLG_STYLE );
+  static SafeCombinationSetupDlg* Create(wxWindow *parent, wxWindowID id = SYMBOL_SAFECOMBINATIONSETUPDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONSETUPDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONSETUPDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONSETUPDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONSETUPDLG_STYLE );
 
   /// Destructor
   ~SafeCombinationSetupDlg();
   wxString GetPassword() const {return m_password;}
 protected:
   /// Constructors
-  SafeCombinationSetupDlg(wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
+  SafeCombinationSetupDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
   SafeCombinationSetupDlg() = default;
 
   /// Creates the controls and sizers

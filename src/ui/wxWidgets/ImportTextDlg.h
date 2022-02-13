@@ -30,10 +30,10 @@ class ImportTextDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static ImportTextDlg* Create(const wxString& filename = wxEmptyString);
+  static ImportTextDlg* Create(wxWindow *parent, const wxString& filename = wxEmptyString);
   virtual ~ImportTextDlg() = default;
 protected:
-  explicit ImportTextDlg(const wxString& filename);
+  ImportTextDlg(wxWindow *parent, const wxString& filename);
   void CreateControls();
 public:
   wxString filepath;

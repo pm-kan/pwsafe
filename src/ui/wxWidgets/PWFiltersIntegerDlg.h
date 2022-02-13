@@ -57,10 +57,10 @@ class pwFiltersIntegerDlg : public wxDialog
   DECLARE_CLASS(pwFiltersIntegerDlg)
   DECLARE_EVENT_TABLE()
 public:
-  static pwFiltersIntegerDlg* Create(FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit = nullptr);
+  static pwFiltersIntegerDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit = nullptr);
 protected:
   /// Constructors
-  pwFiltersIntegerDlg(FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit);
+  pwFiltersIntegerDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit);
 
   /// Destructor
   virtual ~pwFiltersIntegerDlg() = default;

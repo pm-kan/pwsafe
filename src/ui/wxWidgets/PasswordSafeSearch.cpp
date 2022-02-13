@@ -446,7 +446,7 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& event)
 void PasswordSafeSearch::GetAdvancedSearchOptions(int controlId)
 {
   m_criteria->Clean();
-  if (ShowModalAndGetResult<AdvancedSelectionDlg<FindDlgType>>(m_criteria) == wxID_OK) {
+  if (ShowModalAndGetResult<AdvancedSelectionDlg<FindDlgType>>(wxGetTopLevelParent(this), m_criteria) == wxID_OK) {
     // No check for m_criteria.IsDirty() here because we want to start a new search
     // whether or not the group/field selection were modified because user just
     // toggled the "Advanced Options" on.  It was OFF before just now.
@@ -511,7 +511,7 @@ void PasswordSafeSearch::DoToolBarFindReport(int controlId)
   report.WriteLine();
   report.EndReport();
   
-  ShowModalAndGetResult<ViewReportDlg>(&report);
+  ShowModalAndGetResult<ViewReportDlg>(wxGetTopLevelParent(this), &report);
   // set back toggle
   ToggleTool(controlId, false);
 }

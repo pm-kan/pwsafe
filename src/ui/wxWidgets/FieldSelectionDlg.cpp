@@ -47,7 +47,7 @@ BEGIN_EVENT_TABLE( FieldSelectionDlg, wxDialog )
   EVT_COMMAND(wxID_ANY, EVT_RELAYOUT_DLG, FieldSelectionDlg::OnRelayoutDlg)
 END_EVENT_TABLE()
 
-FieldSelectionDlg::FieldSelectionDlg(const CItemData::FieldType* available, size_t navail,
+FieldSelectionDlg::FieldSelectionDlg(wxWindow *parent, const CItemData::FieldType* available, size_t navail,
                                      const CItemData::FieldType* mandatory, size_t nmandatory,
                                      FieldSet& userSelection,
                                      const wxString& operation,
@@ -55,9 +55,11 @@ FieldSelectionDlg::FieldSelectionDlg(const CItemData::FieldType* available, size
                                      const wxString& dlgText,
                                      const wxString& vMsg, 
                                      const wxString& vTitle)
-                                      :wxDialog(nullptr, wxID_ANY, FieldSelTitle(dlgtitle, operation),
+                                      :wxDialog(parent, wxID_ANY, FieldSelTitle(dlgtitle, operation),
                                                 wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   
   dlgSizer->AddSpacer(TopMargin);
@@ -81,13 +83,13 @@ FieldSelectionDlg::FieldSelectionDlg(const CItemData::FieldType* available, size
   SetSizer(dlgSizer);
 }
 
-FieldSelectionDlg* FieldSelectionDlg::Create(const CItemData::FieldType* available, size_t navail,
+FieldSelectionDlg* FieldSelectionDlg::Create(wxWindow *parent, const CItemData::FieldType* available, size_t navail,
                                      const CItemData::FieldType* mandatory, size_t nmandatory,
                                      FieldSet& userSelection, const wxString& operation,
                                      const wxString& dlgtitle, const wxString& dlgText, 
                                      const wxString& vMsg, const wxString& vTitle)
 {
-  return new FieldSelectionDlg(available, navail, mandatory, nmandatory,
+  return new FieldSelectionDlg(parent, available, navail, mandatory, nmandatory,
                               userSelection, operation, dlgtitle, dlgText, vMsg, vTitle);
 }
 

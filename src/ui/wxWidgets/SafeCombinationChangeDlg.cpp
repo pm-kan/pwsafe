@@ -66,15 +66,16 @@ END_EVENT_TABLE()
  * SafeCombinationChangeDlg constructors
  */
 
-SafeCombinationChangeDlg::SafeCombinationChangeDlg(PWScore &core,
+SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &core,
                                                wxWindowID id, const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
 : m_core(core)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationChangeDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -96,10 +97,10 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(PWScore &core,
 }
 
 
-SafeCombinationChangeDlg* SafeCombinationChangeDlg::Create(PWScore &core,
+SafeCombinationChangeDlg* SafeCombinationChangeDlg::Create(wxWindow *parent, PWScore &core,
   wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-  return new SafeCombinationChangeDlg(core, id, caption, pos, size, style);
+  return new SafeCombinationChangeDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!

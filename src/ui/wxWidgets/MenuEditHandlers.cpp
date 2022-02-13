@@ -65,14 +65,14 @@ void PasswordSafeFrame::DoEdit(CItemData item)
   if (!item.IsShortcut()) {
     bool isItemReadOnly = m_core.IsReadOnly() || item.IsProtected();
 
-    returnCode = ShowModalAndGetResult<AddEditPropSheetDlg>(
+    returnCode = ShowModalAndGetResult<AddEditPropSheetDlg>(this,
       m_core,
       isItemReadOnly ? AddEditPropSheetDlg::SheetType::VIEW : AddEditPropSheetDlg::SheetType::EDIT,
       &item
     );
   }
   else {
-    returnCode = ShowModalAndGetResult<EditShortcutDlg>(m_core, &item);
+    returnCode = ShowModalAndGetResult<EditShortcutDlg>(this, m_core, &item);
   }
 
   if (returnCode == wxID_OK) {
@@ -107,7 +107,7 @@ void PasswordSafeFrame::OnAddClick(wxCommandEvent& WXUNUSED(evt))
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
-  int rc = ShowModalAndGetResult<AddEditPropSheetDlg>(m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
+  int rc = ShowModalAndGetResult<AddEditPropSheetDlg>(this, m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
   if (rc == wxID_OK) {
     UpdateStatusBar();
   }
@@ -155,7 +155,7 @@ void PasswordSafeFrame::DoDeleteItems(bool askConfirmation, int num_children)
   bool dodelete = true;
   //Confirm whether to delete the item
   if (askConfirmation) {
-    DestroyWrapper<DeleteConfirmationDlg> deleteDlgWrapper(num_children);
+    DestroyWrapper<DeleteConfirmationDlg> deleteDlgWrapper(this, num_children);
     DeleteConfirmationDlg* deleteDlg = deleteDlgWrapper.Get();
     deleteDlg->SetConfirmdelete(PWSprefs::GetInstance()->GetPref(PWSprefs::DeleteQuestion));
     int rc = deleteDlg->ShowModal();
@@ -551,7 +551,7 @@ void PasswordSafeFrame::OnViewAttachment(wxCommandEvent& WXUNUSED(evt))
     return;
   }
 
-  DestroyWrapper<ViewAttachmentDlg> viewAttachmentDlgWrapper;
+  DestroyWrapper<ViewAttachmentDlg> viewAttachmentDlgWrapper(this);
   ViewAttachmentDlg *viewAttachmentDlg = viewAttachmentDlgWrapper.Get();
 
   if (viewAttachmentDlg->LoadImage(itemAttachment)) {
@@ -592,7 +592,7 @@ void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& WXUNUSED(event))
 
 void PasswordSafeFrame::DoCreateShortcut(CItemData* item)
 {
-  if (ShowModalAndGetResult<CreateShortcutDlg>(m_core, item) == wxID_OK) {
+  if (ShowModalAndGetResult<CreateShortcutDlg>(this, m_core, item) == wxID_OK) {
     UpdateAccessTime(*item);
     Show(true);
     UpdateStatusBar();
@@ -1056,7 +1056,7 @@ void PasswordSafeFrame::DoEmail(CItemData& item )
 void PasswordSafeFrame::DoPasswordSubset(CItemData* item)
 {
   if (item) {
-    ShowModalAndGetResult<PasswordSubsetDlg>(item->GetPassword());
+    ShowModalAndGetResult<PasswordSubsetDlg>(this, item->GetPassword());
     UpdateAccessTime(*item);
   }
 }
@@ -1099,7 +1099,7 @@ void PasswordSafeFrame::DoPasswordQRCode(CItemData* item)
 {
 #ifndef NO_QR
   if (item) {
-    ShowModalAndGetResult<QRCodeDlg>(item->GetPassword(),
+    ShowModalAndGetResult<QRCodeDlg>(this, item->GetPassword(),
             towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
             towxstring(item->GetGroup()) +
             _T('[') + towxstring(item->GetTitle()) + _T(']') +

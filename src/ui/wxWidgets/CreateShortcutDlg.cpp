@@ -55,13 +55,14 @@ END_EVENT_TABLE()
  * CreateShortcutDlg constructors
  */
 
-CreateShortcutDlg::CreateShortcutDlg(PWScore &core, CItemData *base)
+CreateShortcutDlg::CreateShortcutDlg(wxWindow *parent, PWScore &core, CItemData *base)
 : m_Core(core), m_Base(base)
 {
   ASSERT(m_Base != nullptr);
+  wxASSERT(!parent || parent->IsTopLevel());
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(nullptr, wxID_ANY, _("Create Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(parent, wxID_ANY, _("Create Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -74,9 +75,9 @@ CreateShortcutDlg::CreateShortcutDlg(PWScore &core, CItemData *base)
   ItemFieldsToDialog();
 }
 
-CreateShortcutDlg* CreateShortcutDlg::Create(PWScore &core, CItemData *base)
+CreateShortcutDlg* CreateShortcutDlg::Create(wxWindow *parent, PWScore &core, CItemData *base)
 {
-  return new CreateShortcutDlg(core, base);
+  return new CreateShortcutDlg(parent, core, base);
 }
 
 void CreateShortcutDlg::ItemFieldsToDialog()

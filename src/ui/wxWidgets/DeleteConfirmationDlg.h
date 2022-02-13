@@ -57,7 +57,7 @@ class DeleteConfirmationDlg : public wxDialog
 
 public:
   /// Creation
-  static DeleteConfirmationDlg* Create(int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
+  static DeleteConfirmationDlg* Create(wxWindow *parent, int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
 
   /// Destructor
   ~DeleteConfirmationDlg() = default;
@@ -66,7 +66,7 @@ public:
   void SetConfirmdelete(bool value) { m_confirmdelete = value ; }
 protected:
   /// Constructors
-  DeleteConfirmationDlg(int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
+  DeleteConfirmationDlg(wxWindow *parent, int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
 
   /// Creates the controls and sizers
   void CreateControls();

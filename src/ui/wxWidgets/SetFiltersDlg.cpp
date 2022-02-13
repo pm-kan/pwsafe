@@ -65,7 +65,7 @@ END_EVENT_TABLE()
 /*!
  * SetFiltersDlg constructors
  */
-SetFiltersDlg::SetFiltersDlg(st_filters *pfilters,
+SetFiltersDlg::SetFiltersDlg(wxWindow *parent, st_filters *pfilters,
                              st_filters *currentFilters,
                              bool *appliedCalled,
                              const FilterType filtertype,
@@ -84,6 +84,8 @@ SetFiltersDlg::SetFiltersDlg(st_filters *pfilters,
                                             m_filterpool(filterpool),
                                             m_AppliedCalled(appliedCalled)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   wxString heading(caption);
   
   ASSERT(m_pfilters);
@@ -109,7 +111,7 @@ SetFiltersDlg::SetFiltersDlg(st_filters *pfilters,
 
 ////@begin SetFiltersDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -129,12 +131,12 @@ SetFiltersDlg::SetFiltersDlg(st_filters *pfilters,
 ////@end SetFiltersDlg creation
 }
 
-SetFiltersDlg* SetFiltersDlg::Create(st_filters *pfilters, st_filters *currentFilters, 
+SetFiltersDlg* SetFiltersDlg::Create(wxWindow *parent, st_filters *pfilters, st_filters *currentFilters, 
   bool *appliedCalled, const FilterType filtertype, FilterPool filterpool, 
   const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes, wxWindowID id, 
   const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-  return new SetFiltersDlg(pfilters, currentFilters, appliedCalled, filtertype, filterpool, 
+  return new SetFiltersDlg(parent, pfilters, currentFilters, appliedCalled, filtertype, filterpool, 
                            bCanHaveAttachments, psMediaTypes, id, caption, pos, size, style);
 }
 

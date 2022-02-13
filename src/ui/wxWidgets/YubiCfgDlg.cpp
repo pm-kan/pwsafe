@@ -67,13 +67,15 @@ END_EVENT_TABLE()
  * YubiCfgDlg constructors
  */
 
-YubiCfgDlg::YubiCfgDlg(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+YubiCfgDlg::YubiCfgDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 : m_core(core)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   Init();
 ////@begin YubiCfgDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -85,9 +87,9 @@ YubiCfgDlg::YubiCfgDlg(PWScore &core, wxWindowID id, const wxString& caption, co
   HideSK();
 }
 
-YubiCfgDlg* YubiCfgDlg::Create(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+YubiCfgDlg* YubiCfgDlg::Create(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-  return new YubiCfgDlg(core, id, caption, pos, size, style);
+  return new YubiCfgDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!

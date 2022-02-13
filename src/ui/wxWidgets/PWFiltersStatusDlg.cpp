@@ -63,13 +63,15 @@ END_EVENT_TABLE()
  * pwFiltersStatusDlg constructors
  */
 
-pwFiltersStatusDlg::pwFiltersStatusDlg(FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus)
+pwFiltersStatusDlg::pwFiltersStatusDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus)
 : m_ftype(ftype), m_prule(rule), m_pestatus(estatus)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   m_estatus = *m_pestatus;
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(nullptr, wxID_ANY, _("Display Filter Entry Status Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(parent, wxID_ANY, _("Display Filter Entry Status Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -80,9 +82,9 @@ pwFiltersStatusDlg::pwFiltersStatusDlg(FieldType ftype, PWSMatch::MatchRule *rul
   SetValidators();
 }
 
-pwFiltersStatusDlg* pwFiltersStatusDlg::Create(FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus)
+pwFiltersStatusDlg* pwFiltersStatusDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus)
 {
-  return new pwFiltersStatusDlg(ftype, rule, estatus);
+  return new pwFiltersStatusDlg(parent, ftype, rule, estatus);
 }
 
 /*!

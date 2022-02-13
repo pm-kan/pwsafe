@@ -65,14 +65,16 @@ END_EVENT_TABLE()
 /*!
  * pwFiltersPasswordDlg constructors
  */
-pwFiltersPasswordDlg::pwFiltersPasswordDlg(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1)
+pwFiltersPasswordDlg::pwFiltersPasswordDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1)
 : m_ftype(ftype),
  m_prule(rule), m_pvalue(value), m_pfcase(fcase), m_pfnum1(fnum1)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   Init();
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(nullptr, wxID_ANY, _("Display Filter Password Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(parent, wxID_ANY, _("Display Filter Password Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -83,9 +85,9 @@ pwFiltersPasswordDlg::pwFiltersPasswordDlg(FieldType ftype, PWSMatch::MatchRule 
   SetValidators();
 }
 
-pwFiltersPasswordDlg* pwFiltersPasswordDlg::Create(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1)
+pwFiltersPasswordDlg* pwFiltersPasswordDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1)
 {
-  return new pwFiltersPasswordDlg(ftype, rule, value, fcase, fnum1);
+  return new pwFiltersPasswordDlg(parent, ftype, rule, value, fcase, fnum1);
 }
 
 /*!

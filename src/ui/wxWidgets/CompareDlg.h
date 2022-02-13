@@ -52,9 +52,9 @@ class CompareDlg : public wxDialog
   void WriteReport();
 
 protected:
-  explicit CompareDlg(PWScore* core);
+  explicit CompareDlg(wxWindow *parent, PWScore* core);
 public:
-  static CompareDlg* Create(PWScore* core);
+  static CompareDlg* Create(wxWindow *parent, PWScore* core);
   ~CompareDlg();
 
 private:

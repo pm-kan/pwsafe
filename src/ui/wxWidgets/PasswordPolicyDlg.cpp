@@ -64,12 +64,14 @@ END_EVENT_TABLE()
  * PasswordPolicyDlg constructor
  */
 
-PasswordPolicyDlg::PasswordPolicyDlg(PWScore &core,
+PasswordPolicyDlg::PasswordPolicyDlg(wxWindow *parent, PWScore &core,
                                   const PSWDPolicyMap &polmap, DialogType type,
                                   wxWindowID id, const wxString& caption,
                                   const wxPoint& pos, const wxSize& size, long style )
 : m_core(core), m_MapPSWDPLC(polmap), m_DialogType(type)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   // Collect all policy names to display in combobox control
   for (auto& policy : m_MapPSWDPLC) {
     m_Policynames.Add(stringx2std(policy.first));
@@ -78,7 +80,7 @@ PasswordPolicyDlg::PasswordPolicyDlg(PWScore &core,
 ////@begin PasswordPolicyDlg creation
   m_DialogType = type;
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -89,12 +91,12 @@ PasswordPolicyDlg::PasswordPolicyDlg(PWScore &core,
 ////@end PasswordPolicyDlg creation
 }
 
-PasswordPolicyDlg* PasswordPolicyDlg::Create(PWScore &core,
+PasswordPolicyDlg* PasswordPolicyDlg::Create(wxWindow *parent, PWScore &core,
                                   const PSWDPolicyMap &polmap, DialogType type,
                                   wxWindowID id, const wxString& caption,
                                   const wxPoint& pos, const wxSize& size, long style)
 {
-  return new PasswordPolicyDlg(core, polmap, type, id, caption, pos, size, style);
+  return new PasswordPolicyDlg(parent, core, polmap, type, id, caption, pos, size, style);
 }
 
 void PasswordPolicyDlg::SetDefaultSymbolDisplay(bool restore_defaults)

@@ -67,11 +67,12 @@ END_EVENT_TABLE()
 /*!
  * SafeCombinationSetupDlg constructors
  */
-SafeCombinationSetupDlg::SafeCombinationSetupDlg(wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+SafeCombinationSetupDlg::SafeCombinationSetupDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationSetupDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -87,9 +88,9 @@ SafeCombinationSetupDlg::SafeCombinationSetupDlg(wxWindowID id, const wxString& 
 #endif
 }
 
-SafeCombinationSetupDlg* SafeCombinationSetupDlg::Create(wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+SafeCombinationSetupDlg* SafeCombinationSetupDlg::Create(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-  return new SafeCombinationSetupDlg(id, caption, pos, size, style);
+  return new SafeCombinationSetupDlg(parent, id, caption, pos, size, style);
 }
 
 /*!

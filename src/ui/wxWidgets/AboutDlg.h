@@ -77,7 +77,7 @@ class AboutDlg : public wxDialog, public wxThreadHelper
 
 public:
   /// Creation
-  static AboutDlg* Create(wxWindowID id = SYMBOL_ABOUTDLG_IDNAME, const wxString& caption = SYMBOL_ABOUTDLG_TITLE, const wxPoint& pos = SYMBOL_ABOUTDLG_POSITION, const wxSize& size = SYMBOL_ABOUTDLG_SIZE, long style = SYMBOL_ABOUTDLG_STYLE );
+  static AboutDlg* Create(wxWindow *parent, wxWindowID id = SYMBOL_ABOUTDLG_IDNAME, const wxString& caption = SYMBOL_ABOUTDLG_TITLE, const wxPoint& pos = SYMBOL_ABOUTDLG_POSITION, const wxSize& size = SYMBOL_ABOUTDLG_SIZE, long style = SYMBOL_ABOUTDLG_STYLE );
 
   /// Destructor
   ~AboutDlg() = default;
@@ -87,7 +87,7 @@ protected:
   virtual wxThread::ExitCode Entry();
 
   /// Constructors
-  AboutDlg(wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style );
+  AboutDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style );
 
   /// Creates the controls and sizers
   void CreateControls();

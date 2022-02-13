@@ -115,14 +115,14 @@ class ManageFiltersDlg: public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static ManageFiltersDlg* Create(PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = nullptr, bool readOnly = true, wxWindowID id = SYMBOL_MANAGEFILTERS_IDNAME, const wxString& caption = SYMBOL_MANAGEFILTERS_TITLE, const wxPoint& pos = SYMBOL_MANAGEFILTERS_POSITION, const wxSize& size = SYMBOL_MANAGEFILTERS_SIZE, long style = SYMBOL_MANAGEFILTERS_STYLE );
+  static ManageFiltersDlg* Create(wxWindow *parent, PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = nullptr, bool readOnly = true, wxWindowID id = SYMBOL_MANAGEFILTERS_IDNAME, const wxString& caption = SYMBOL_MANAGEFILTERS_TITLE, const wxPoint& pos = SYMBOL_MANAGEFILTERS_POSITION, const wxSize& size = SYMBOL_MANAGEFILTERS_SIZE, long style = SYMBOL_MANAGEFILTERS_STYLE );
 
   /// Destructor
   ~ManageFiltersDlg() = default;
 protected:
   /// Constructors
   ManageFiltersDlg() = default;
-  ManageFiltersDlg(PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes, bool readOnly, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
+  ManageFiltersDlg(wxWindow *parent, PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes, bool readOnly, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();

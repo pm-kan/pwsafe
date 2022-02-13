@@ -44,14 +44,14 @@ class EditShortcutDlg : public wxDialog
 
 public:
 
-  static EditShortcutDlg* Create(PWScore &core, CItemData *shortcut);
+  static EditShortcutDlg* Create(wxWindow *parent, PWScore &core, CItemData *shortcut);
 
   /// Destructor
   virtual ~EditShortcutDlg() = default;
 
 protected:
   /// Constructors
-  EditShortcutDlg(PWScore &core, CItemData *shortcut);
+  EditShortcutDlg(wxWindow *parent, PWScore &core, CItemData *shortcut);
 
   /// Creates the controls and sizers
   void CreateControls();

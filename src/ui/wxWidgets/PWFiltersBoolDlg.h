@@ -51,12 +51,12 @@ class pwFiltersBoolDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static pwFiltersBoolDlg* Create(FieldType ftype, PWSMatch::MatchRule *rule);
+  static pwFiltersBoolDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule);
 protected:
   enum BoolType {BT_PRESENT, BT_ACTIVE, BT_SET, BT_IS};
 
   /// Constructors
-  pwFiltersBoolDlg(FieldType ftype, PWSMatch::MatchRule *rule);
+  pwFiltersBoolDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule);
 
   /// Destructor
   virtual ~pwFiltersBoolDlg() = default;

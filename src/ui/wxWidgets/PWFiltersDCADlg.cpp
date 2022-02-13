@@ -72,14 +72,16 @@ END_EVENT_TABLE()
  * pwFiltersDCADlg constructors
  */
 
-pwFiltersDCADlg::pwFiltersDCADlg(FieldType ftype, PWSMatch::MatchRule *rule, short *fdca)
+pwFiltersDCADlg::pwFiltersDCADlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, short *fdca)
 : m_ftype(ftype)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   m_prule = rule;
   m_pfdca = fdca;
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(nullptr, wxID_ANY, _("Display Filter DCA Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(parent, wxID_ANY, _("Display Filter DCA Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -90,9 +92,9 @@ pwFiltersDCADlg::pwFiltersDCADlg(FieldType ftype, PWSMatch::MatchRule *rule, sho
   SetValidators();
 }
 
-pwFiltersDCADlg* pwFiltersDCADlg::Create(FieldType ftype, PWSMatch::MatchRule *rule, short *fdca)
+pwFiltersDCADlg* pwFiltersDCADlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, short *fdca)
 {
-  return new pwFiltersDCADlg(ftype, rule, fdca);
+  return new pwFiltersDCADlg(parent, ftype, rule, fdca);
 }
 
 /*!

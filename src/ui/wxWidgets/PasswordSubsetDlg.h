@@ -58,7 +58,7 @@ class PasswordSubsetDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-   static PasswordSubsetDlg* Create(const StringX &password,
+   static PasswordSubsetDlg* Create(wxWindow *parent, const StringX &password,
                    wxWindowID id = SYMBOL_PASSWORDSUBSETDLG_IDNAME, const wxString& caption = SYMBOL_PASSWORDSUBSETDLG_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSUBSETDLG_POSITION, const wxSize& size = SYMBOL_PASSWORDSUBSETDLG_SIZE, long style = SYMBOL_PASSWORDSUBSETDLG_STYLE );
   /// Destructor
   ~PasswordSubsetDlg() = default;
@@ -66,7 +66,7 @@ public:
 protected:
   /// Constructors
   PasswordSubsetDlg() = default;
-  PasswordSubsetDlg(const StringX &password, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
+  PasswordSubsetDlg(wxWindow *parent, const StringX &password, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();

@@ -1348,7 +1348,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // prompt for password, try to Load.
-  DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(m_core, fname, false);
+  DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(this, m_core, fname, false);
   SafeCombinationPromptDlg* pwdprompt = pwdpromptWrapper.Get();
 
   if (pwdprompt->ShowModal() == wxID_OK) {
@@ -1531,7 +1531,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 
 void PasswordSafeFrame::OnAboutClick(wxCommandEvent& WXUNUSED(evt))
 {
-  ShowModalAndGetResult<AboutDlg>();
+  ShowModalAndGetResult<AboutDlg>(this);
 }
 
 /*!
@@ -2389,7 +2389,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
 
   if (m_sysTray->IsLocked()) {
     // Allow Exit in all cases (if dialog vetoed close, we'll stop on it)
-    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(m_core, towxstring(m_core.GetCurFile()), true);
+    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(this, m_core, towxstring(m_core.GetCurFile()), true);
     SafeCombinationPromptDlg* scp = scpWrapper.Get();
 
     switch (scp->ShowModal()) {
@@ -2626,7 +2626,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 
 void PasswordSafeFrame::ViewReport(CReport& rpt)
 {
-  ShowModalAndGetResult<ViewReportDlg>(&rpt);
+  ShowModalAndGetResult<ViewReportDlg>(this, &rpt);
 }
 
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)

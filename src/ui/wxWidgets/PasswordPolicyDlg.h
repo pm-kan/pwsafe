@@ -82,7 +82,7 @@ class PasswordPolicyDlg : public wxDialog
 
 public:
   enum class DialogType { EDITOR, GENERATOR };
-  static PasswordPolicyDlg* Create(PWScore &core,
+  static PasswordPolicyDlg* Create(wxWindow *parent, PWScore &core,
                    const PSWDPolicyMap &polmap,
                    DialogType type = DialogType::EDITOR,
                    wxWindowID id = SYMBOL_PASSWORDPOLICYDLG_IDNAME,
@@ -95,7 +95,7 @@ public:
   ~PasswordPolicyDlg() = default;
 protected:
   /// Constructors
-  PasswordPolicyDlg(PWScore &core,
+  PasswordPolicyDlg(wxWindow *parent, PWScore &core,
                    const PSWDPolicyMap &polmap,
                    DialogType type, wxWindowID id,
                    const wxString& caption, const wxPoint& pos, const wxSize& size, long style);

@@ -64,13 +64,13 @@ class YubiCfgDlg : public wxDialog
 
 public:
   /// Constructors
-  static YubiCfgDlg* Create(PWScore &core, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
+  static YubiCfgDlg* Create(wxWindow *parent, PWScore &core, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
 
   /// Destructor
   ~YubiCfgDlg();
 protected:
   /// Constructors
-  YubiCfgDlg(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
+  YubiCfgDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Initialises member variables
   void Init();

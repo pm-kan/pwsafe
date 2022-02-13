@@ -56,10 +56,10 @@ class pwFiltersMediaTypesDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static pwFiltersMediaTypesDlg* Create(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes);
+  static pwFiltersMediaTypesDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes);
 protected:
   /// Constructors
-  pwFiltersMediaTypesDlg(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes);
+  pwFiltersMediaTypesDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes);
 
   /// Destructor
   virtual ~pwFiltersMediaTypesDlg() = default;

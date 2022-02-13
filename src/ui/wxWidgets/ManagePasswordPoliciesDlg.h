@@ -72,14 +72,14 @@ class ManagePasswordPoliciesDlg: public wxDialog
 
 public:
   /// Creation
-  static ManagePasswordPoliciesDlg* Create(PWScore &core, wxWindowID id = SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME, const wxString& caption = SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE, const wxPoint& pos = SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION, const wxSize& size = SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE, long style = SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE );
+  static ManagePasswordPoliciesDlg* Create(wxWindow *parent, PWScore &core, wxWindowID id = SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME, const wxString& caption = SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE, const wxPoint& pos = SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION, const wxSize& size = SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE, long style = SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE );
 
   /// Destructor
   ~ManagePasswordPoliciesDlg() = default;
 
 protected:
   /// Constructors
-  ManagePasswordPoliciesDlg(PWScore &core,
+  ManagePasswordPoliciesDlg(wxWindow *parent, PWScore &core,
          wxWindowID id, const wxString& caption, const wxPoint& pos,
          const wxSize& size,long style);
 

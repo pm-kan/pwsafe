@@ -85,7 +85,7 @@ END_EVENT_TABLE()
  * ManagePasswordPoliciesDlg constructor
  */
 
-ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg(PWScore &core, wxWindowID id,
+ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg(wxWindow *parent, PWScore &core, wxWindowID id,
               const wxString& caption, const wxPoint& pos,
               const wxSize& size, long style )
 : m_core(core), m_curPolRow(-1),
@@ -93,11 +93,13 @@ ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg(PWScore &core, wxWindowID i
   m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_bViewPolicy(true),
   m_bShowPolicyEntriesInitially(true)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   m_PolicyManager = std::unique_ptr<PolicyManager>(new PolicyManager(m_core));
 
 ////@begin ManagePasswordPoliciesDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -108,11 +110,11 @@ ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg(PWScore &core, wxWindowID i
 ////@end ManagePasswordPoliciesDlg creation
 }
 
-ManagePasswordPoliciesDlg* ManagePasswordPoliciesDlg::Create(PWScore &core, wxWindowID id,
+ManagePasswordPoliciesDlg* ManagePasswordPoliciesDlg::Create(wxWindow *parent, PWScore &core, wxWindowID id,
               const wxString& caption, const wxPoint& pos,
               const wxSize& size, long style)
 {
-  return new ManagePasswordPoliciesDlg(core, id, caption, pos, size, style);
+  return new ManagePasswordPoliciesDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!
@@ -574,7 +576,7 @@ void ManagePasswordPoliciesDlg::DoNewClick()
   auto policies = m_PolicyManager->GetPolicies();
   auto policy   = m_PolicyManager->GetDefaultPolicy();
 
-  DestroyWrapper<PasswordPolicyDlg> ppdlg(m_core, policies);
+  DestroyWrapper<PasswordPolicyDlg> ppdlg(this, m_core, policies);
   ppdlg.Get()->SetPolicyData(wxEmptyString, policy);
 
   if (ppdlg.Get()->ShowModal() == wxID_OK) {
@@ -631,7 +633,7 @@ void ManagePasswordPoliciesDlg::DoEditClick()
     originalPolicy     = m_PolicyManager->GetPolicy(originalPolicyname.ToStdWstring());
   }
 
-  DestroyWrapper<PasswordPolicyDlg> ppdlg(m_core, policies);
+  DestroyWrapper<PasswordPolicyDlg> ppdlg(this, m_core, policies);
 
   ppdlg.Get()->SetPolicyData(originalPolicyname, originalPolicy);
 

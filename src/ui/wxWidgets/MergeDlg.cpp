@@ -39,10 +39,12 @@ BEGIN_EVENT_TABLE( MergeDlg, wxDialog )
   EVT_BUTTON( ID_ADVANCED,  MergeDlg::OnAdvancedSelection )
 END_EVENT_TABLE()
 
-MergeDlg::MergeDlg(PWScore* core, const wxString& filename) :
-                      wxDialog(nullptr, wxID_ANY, wxString(_("Merge Another Database"))),
+MergeDlg::MergeDlg(wxWindow *parent, PWScore* core, const wxString& filename) :
+                      wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
                       m_core(core), m_selection(new SelectionCriteria), m_dbPanel(nullptr)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) <<
                                           towxstring(m_core->GetCurFile()) << wxT("\""));
   const wxString filePickerCtrlTitle(_("Please Choose a Database to Merge into current database"));
@@ -71,9 +73,9 @@ MergeDlg::MergeDlg(PWScore* core, const wxString& filename) :
   SetSizerAndFit(dlgSizer);
 }
 
-MergeDlg* MergeDlg::Create(PWScore* core, const wxString& filename)
+MergeDlg* MergeDlg::Create(wxWindow *parent, PWScore* core, const wxString& filename)
 {
-  return new MergeDlg(core, filename);
+  return new MergeDlg(parent, core, filename);
 }
 
 MergeDlg::~MergeDlg()
@@ -123,7 +125,7 @@ void MergeDlg::OnAdvancedSelection(wxCommandEvent& )
 
 void MergeDlg::DoAdvancedSelection()
 {
-  ShowModalAndGetResult<AdvancedSelectionDlg<AdvancedMergeOptions>>(m_selection);
+  ShowModalAndGetResult<AdvancedSelectionDlg<AdvancedMergeOptions>>(this, m_selection);
 }
 
 wxString MergeDlg::GetOtherSafePath() const

@@ -114,7 +114,7 @@ class SelectAliasDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static SelectAliasDlg* Create(PWScore *core, CItemData *item, CItemData **pbci,
+  static SelectAliasDlg* Create(wxWindow *parent, PWScore *core, CItemData *item, CItemData **pbci,
     wxWindowID id = SYMBOL_SELECTALIAS_IDNAME, const wxString& caption = SYMBOL_SELECTALIAS_TITLE, const wxPoint& pos = SYMBOL_SELECTALIAS_POSITION, const wxSize& size = SYMBOL_SELECTALIAS_SIZE, long style = SYMBOL_SELECTALIAS_STYLE );
 
   /// Destructor
@@ -125,7 +125,7 @@ public:
 protected:
   /// Constructors
   SelectAliasDlg() = default;
-  SelectAliasDlg(PWScore *core, CItemData *item, CItemData **pbci,
+  SelectAliasDlg(wxWindow *parent, PWScore *core, CItemData *item, CItemData **pbci,
     wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers

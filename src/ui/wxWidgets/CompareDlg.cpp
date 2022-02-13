@@ -87,7 +87,7 @@ struct ComparisonData {
 
 wxDEFINE_SCOPED_PTR_TYPE(MultiCommands)
 
-CompareDlg::CompareDlg(PWScore* currentCore): wxDialog(nullptr,
+CompareDlg::CompareDlg(wxWindow *parent, PWScore* currentCore): wxDialog(parent,
                                                         wxID_ANY,
                                                         _("Compare current database with another database"),
                                                         wxDefaultPosition,
@@ -104,6 +104,8 @@ CompareDlg::CompareDlg(PWScore* currentCore): wxDialog(nullptr,
                                                         m_conflicts(new ComparisonData),
                                                         m_identical(new ComparisonData)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   SetExtraStyle(GetExtraStyle() | wxWS_EX_VALIDATE_RECURSIVELY);
 
   //compare all fields by default
@@ -112,9 +114,9 @@ CompareDlg::CompareDlg(PWScore* currentCore): wxDialog(nullptr,
   CreateControls();
 }
 
-CompareDlg* CompareDlg::Create(PWScore* core)
+CompareDlg* CompareDlg::Create(wxWindow *parent, PWScore* core)
 {
-  return new CompareDlg(core);
+  return new CompareDlg(parent, core);
 }
 
 CompareDlg::~CompareDlg()
@@ -337,7 +339,7 @@ void CompareDlg::OnShowReport(wxCommandEvent& )
 }
 void CompareDlg::DoShowReport()
 {
-  ShowModalAndGetResult<ViewReportDlg>(&m_compReport);
+  ShowModalAndGetResult<ViewReportDlg>(this, &m_compReport);
 }
 
 void CompareDlg::DoCompare(wxCommandEvent& WXUNUSED(evt))
@@ -613,7 +615,7 @@ void CompareDlg::DoViewInComparisonDB(ContextMenuData menuContext)
 
 bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly)
 {
-  int rc = ShowModalAndGetResult<AddEditPropSheetDlg>(*core,
+  int rc = ShowModalAndGetResult<AddEditPropSheetDlg>(this, *core,
                       readOnly? AddEditPropSheetDlg::SheetType::VIEW: AddEditPropSheetDlg::SheetType::EDIT,
                       &core->Find(uuid)->second);
   return rc == wxID_OK && !readOnly;
@@ -826,7 +828,7 @@ void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData menuContex
   FieldSet userSelection(syncFields, syncFields + WXSIZEOF(syncFields));
 
   //let the user choose which fields to synchronize
-  int rc = ShowModalAndGetResult<FieldSelectionDlg>(
+  int rc = ShowModalAndGetResult<FieldSelectionDlg>(this,
                         nullptr, 0, //no fields are left unselected by default
                         nullptr, 0, //But no fields are mandatory
                         userSelection,

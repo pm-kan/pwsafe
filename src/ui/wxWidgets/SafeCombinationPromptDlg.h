@@ -71,7 +71,7 @@ class SafeCombinationPromptDlg : public wxDialog
 
 
 public:
-  static SafeCombinationPromptDlg* Create(PWScore &core, const wxString &fname, const bool allowExit = true,
+  static SafeCombinationPromptDlg* Create(wxWindow *parent, PWScore &core, const wxString &fname, const bool allowExit = true,
                          wxWindowID id = SYMBOL_SAFECOMBINATIONPROMPTDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONPROMPTDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONPROMPTDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONPROMPTDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONPROMPTDLG_STYLE );
    /// Destructor
 ~SafeCombinationPromptDlg();
@@ -79,7 +79,7 @@ public:
   StringX GetPassword() const {return m_password;}
 protected:
   /// Constructors
-  SafeCombinationPromptDlg(PWScore &core, const wxString &fname, const bool allowExit,
+  SafeCombinationPromptDlg(wxWindow *parent, PWScore &core, const wxString &fname, const bool allowExit,
     wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers

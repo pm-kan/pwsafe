@@ -144,7 +144,7 @@ const wxString DCAStrings[] = {
 /*!
  * OptionsPropertySheetDlg constructors
  */
-OptionsPropertySheetDlg::OptionsPropertySheetDlg(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+OptionsPropertySheetDlg::OptionsPropertySheetDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
   : m_core(core)
 {
   const wxSize imageSize(64, 64);
@@ -161,7 +161,7 @@ OptionsPropertySheetDlg::OptionsPropertySheetDlg(PWScore &core, wxWindowID id, c
 ////@begin OptionsPropertySheetDlg creation
   SetSheetStyle(wxPROPSHEET_LISTBOOK);
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxPropertySheetDialog::Create( nullptr, id, caption, pos, size, style );
+  wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
   CreateButtons(wxOK|wxCANCEL|wxHELP);
   CreateControls();
@@ -173,9 +173,9 @@ OptionsPropertySheetDlg::OptionsPropertySheetDlg(PWScore &core, wxWindowID id, c
   OnSuffixCBSet(dummyEv);
 }
 
-OptionsPropertySheetDlg* OptionsPropertySheetDlg::Create(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
+OptionsPropertySheetDlg* OptionsPropertySheetDlg::Create(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-  return new OptionsPropertySheetDlg(core, id, caption, pos, size, style);
+  return new OptionsPropertySheetDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!

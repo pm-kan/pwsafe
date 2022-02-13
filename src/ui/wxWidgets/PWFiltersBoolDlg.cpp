@@ -58,14 +58,15 @@ END_EVENT_TABLE()
  * pwFiltersBoolDlg constructors
  */
 
-pwFiltersBoolDlg::pwFiltersBoolDlg(FieldType ftype, PWSMatch::MatchRule *rule)
+pwFiltersBoolDlg::pwFiltersBoolDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule)
 : m_ftype(ftype), m_prule(rule)
 {
-  
+  wxASSERT(!parent || parent->IsTopLevel());
+
   m_btype = ConvertType(m_ftype);
   
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(nullptr, wxID_ANY, _("Display Filter Boolean Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(parent, wxID_ANY, _("Display Filter Boolean Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -76,9 +77,9 @@ pwFiltersBoolDlg::pwFiltersBoolDlg(FieldType ftype, PWSMatch::MatchRule *rule)
   SetValidators();
 }
 
-pwFiltersBoolDlg* pwFiltersBoolDlg::Create(FieldType ftype, PWSMatch::MatchRule *rule)
+pwFiltersBoolDlg* pwFiltersBoolDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule)
 {
-  return new pwFiltersBoolDlg(ftype, rule);
+  return new pwFiltersBoolDlg(parent, ftype, rule);
 }
 
 /*!

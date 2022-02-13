@@ -35,7 +35,7 @@ class QRCodeDlg : public wxDialog
   void UpdateTimeRemaining();
 
 public:
-  static QRCodeDlg* Create(
+  static QRCodeDlg* Create(wxWindow *parent, 
             const StringX &data,
             const wxString& title,
             const int seconds = 15,
@@ -46,7 +46,7 @@ public:
 
   ~QRCodeDlg() = default;
 protected:
-  QRCodeDlg(const StringX &data, const wxString& title,
+  QRCodeDlg(wxWindow *parent, const StringX &data, const wxString& title,
             const int seconds, 
             const wxPoint &pos, const wxSize &size, long style,
             const wxString &name);

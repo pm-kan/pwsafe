@@ -64,7 +64,7 @@ class SetFiltersDlg: public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static SetFiltersDlg* Create(st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
+  static SetFiltersDlg* Create(wxWindow *parent, st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
     const FilterType filtertype = DFTYPE_MAIN, FilterPool filterpool = FPOOL_LAST, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = nullptr, wxWindowID id = SYMBOL_SETFILTERS_IDNAME, const wxString& caption = SYMBOL_SETFILTERS_TITLE, const wxPoint& pos = SYMBOL_SETFILTERS_POSITION, const wxSize& size = SYMBOL_SETFILTERS_SIZE, long style = SYMBOL_SETFILTERS_STYLE );
 
   /// Destructor
@@ -72,7 +72,7 @@ public:
 public:
   /// Constructors
   SetFiltersDlg() = default;
-  SetFiltersDlg(st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
+  SetFiltersDlg(wxWindow *parent, st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
                 const FilterType filtertype, FilterPool filterpool, const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers

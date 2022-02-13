@@ -129,7 +129,7 @@ const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT10 = wxWindow::NewControlId()
  * AddEditPropSheetDlg constructors
  */
 
-AddEditPropSheetDlg::AddEditPropSheetDlg(PWScore &core,
+AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
                                    SheetType type, const CItemData *item,
                                    const wxString& selectedGroup,
                                    wxWindowID id, const wxString& caption,
@@ -137,6 +137,8 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(PWScore &core,
                                    long style)
 : m_Core(core), m_SelectedGroup(selectedGroup), m_Type(type)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   if (item != nullptr) {
     m_Item = *item; // copy existing item to display values
   }
@@ -166,7 +168,7 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(PWScore &core,
 
 ////@begin AddEditPropSheetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxPropertySheetDialog::Create( nullptr, id, caption, pos, size, style );
+  wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
   int flags = (m_Type == SheetType::VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
   CreateButtons(flags);
@@ -186,12 +188,12 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(PWScore &core,
   }
 }
 
-AddEditPropSheetDlg* AddEditPropSheetDlg::Create(PWScore &core,
+AddEditPropSheetDlg* AddEditPropSheetDlg::Create(wxWindow *parent, PWScore &core,
   SheetType type, const CItemData *item, const wxString &selectedGroup,
   wxWindowID id, const wxString &caption, const wxPoint &pos, 
   const wxSize &size, long style)
 {
-  return new AddEditPropSheetDlg(core, type, item, selectedGroup, id, caption, pos, size, style);
+  return new AddEditPropSheetDlg(parent, core, type, item, selectedGroup, id, caption, pos, size, style);
 }
                       
 static void setupDCAStrings(wxArrayString &as)
@@ -1637,7 +1639,7 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
   }
   
   
-  int rc = ShowModalAndGetResult<SelectAliasDlg>(&m_Core, &m_Item, &pbci);
+  int rc = ShowModalAndGetResult<SelectAliasDlg>(this, &m_Core, &m_Item, &pbci);
   if(rc == wxID_OK) {
     if(! m_Core.IsReadOnly()) {
       bool bChangeToBaseEntry = false;

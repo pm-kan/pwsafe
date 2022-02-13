@@ -54,10 +54,10 @@ class pwFiltersTypeDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static pwFiltersTypeDlg* Create(FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype);
+  static pwFiltersTypeDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype);
 protected:
   /// Constructors
-  pwFiltersTypeDlg(FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype);
+  pwFiltersTypeDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype);
 
   /// Destructor
   virtual ~pwFiltersTypeDlg() = default;

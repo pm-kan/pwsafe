@@ -222,7 +222,7 @@ void PasswordSafeFrame::RunShowReport(int iAction)
   CReport rpt;
   rpt.StartReport(iAction, m_core.GetCurFile().c_str(), false);
   if(rpt.ReadFromDisk()) {
-    ShowModalAndGetResult<ViewReportDlg>(&rpt, true);
+    ShowModalAndGetResult<ViewReportDlg>(this, &rpt, true);
   }
   else {
     wxString tcAction = CReport::ReportNames.find(iAction)->second;
@@ -408,7 +408,7 @@ void PasswordSafeFrame::DoEditFilter()
   while(bDoEdit) {
     bDoEdit = false; // In formal case we run only one time in the loop; but when removal of double entry is requested we avoid goto
 
-    int rc = ShowModalAndGetResult<SetFiltersDlg>(&filters, &CurrentFilter(), &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, bCanHaveAttachments, &sMediaTypes);;
+    int rc = ShowModalAndGetResult<SetFiltersDlg>(this, &filters, &CurrentFilter(), &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, bCanHaveAttachments, &sMediaTypes);;
   
     if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled)) {
       // User can apply the filter in SetFiltersDlg and then press Cancel button
@@ -577,7 +577,7 @@ void PasswordSafeFrame::DoManageFilters()
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
   const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
 
-  int rc = ShowModalAndGetResult<ManageFiltersDlg>(&m_core, m_MapAllFilters, &CurrentFilter(), &m_currentfilterpool, &m_selectedfiltername, &m_bFilterActive, bCanHaveAttachments, &sMediaTypes, m_core.IsReadOnly());;
+  int rc = ShowModalAndGetResult<ManageFiltersDlg>(this, &m_core, m_MapAllFilters, &CurrentFilter(), &m_currentfilterpool, &m_selectedfiltername, &m_bFilterActive, bCanHaveAttachments, &sMediaTypes, m_core.IsReadOnly());;
   
   // No change in DB filter when return ID_CANCEL
   if(rc == wxID_CANCEL)

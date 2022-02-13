@@ -167,7 +167,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
     } else
       return PWScore::USER_CANCEL;
 
-    DestroyWrapper<SafeCombinationSetupDlg> dbox_pksetupWrapper;
+    DestroyWrapper<SafeCombinationSetupDlg> dbox_pksetupWrapper(this);
     SafeCombinationSetupDlg* dbox_pksetup = dbox_pksetupWrapper.Get();
     rc = dbox_pksetup->ShowModal();
 
@@ -760,7 +760,7 @@ void PasswordSafeFrame::DoExportText()
     return;
   }
 
-  DestroyWrapper<ExportTextWarningDlg<ExportType>> etWrapper;
+  DestroyWrapper<ExportTextWarningDlg<ExportType>> etWrapper(this);
   auto *et = etWrapper.Get(); 
   if (et->ShowModal() != wxID_OK) {
     return;
@@ -870,7 +870,7 @@ void PasswordSafeFrame::DoImportText(wxString filename)
     return;
   }
 
-  DestroyWrapper<ImportTextDlg> dlgWrapper(filename);
+  DestroyWrapper<ImportTextDlg> dlgWrapper(this, filename);
   ImportTextDlg *dlg = dlgWrapper.Get();
   if (dlg->ShowModal() != wxID_OK)
     return;
@@ -1000,7 +1000,7 @@ void PasswordSafeFrame::DoImportXML(wxString filename)
   }
 #endif
 
-  DestroyWrapper<ImportXmlDlg> dlgWrapper(filename);
+  DestroyWrapper<ImportXmlDlg> dlgWrapper(this, filename);
   ImportXmlDlg *dlg = dlgWrapper.Get();
   if (dlg->ShowModal() != wxID_OK) {
     return;
@@ -1228,7 +1228,7 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 
 void PasswordSafeFrame::DoMergeAnotherSafe(wxString filename)
 {
-  DestroyWrapper<MergeDlg> dlgWrapper(&m_core, filename);
+  DestroyWrapper<MergeDlg> dlgWrapper(this, &m_core, filename);
   MergeDlg* dlg = dlgWrapper.Get();
 
   if (dlg->ShowModal() == wxID_OK) {
@@ -1291,7 +1291,7 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::DoCompare()
 {
-  ShowModalAndGetResult<CompareDlg>(&m_core);
+  ShowModalAndGetResult<CompareDlg>(this, &m_core);
 }
 
 void PasswordSafeFrame::OnSynchronize(wxCommandEvent& evt)
@@ -1328,7 +1328,7 @@ void PasswordSafeFrame::OnPropertiesClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::DoPropertiesClick()
 {
-  DestroyWrapper<PropertiesDlg> dlgWrapper(m_core);
+  DestroyWrapper<PropertiesDlg> dlgWrapper(this, m_core);
   PropertiesDlg* propsDialog = dlgWrapper.Get();
   propsDialog->ShowModal();
 

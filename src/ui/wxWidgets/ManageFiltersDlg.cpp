@@ -219,7 +219,7 @@ END_EVENT_TABLE()
  * ManageFiltersDlg constructors
  */
 
-ManageFiltersDlg::ManageFiltersDlg(PWScore *core,
+ManageFiltersDlg::ManageFiltersDlg(wxWindow *parent, PWScore *core,
                                    PWSFilters &MapFilters,
                                    st_filters *currentFilters,
                                    FilterPool *activefilterpool,
@@ -246,9 +246,10 @@ ManageFiltersDlg::ManageFiltersDlg(PWScore *core,
                                             m_pActiveFilterName(activefiltername),
                                             m_pbFilterActive(bFilterActive)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin ManageFiltersDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -260,7 +261,7 @@ ManageFiltersDlg::ManageFiltersDlg(PWScore *core,
 }
 
 
-ManageFiltersDlg* ManageFiltersDlg::Create(PWScore *core,
+ManageFiltersDlg* ManageFiltersDlg::Create(wxWindow *parent, PWScore *core,
                                    PWSFilters &MapFilters,
                                    st_filters *currentFilters,
                                    FilterPool *activefilterpool,
@@ -274,7 +275,7 @@ ManageFiltersDlg* ManageFiltersDlg::Create(PWScore *core,
                                    const wxSize& size,
                                    long style )
 {
-  return new ManageFiltersDlg(core, MapFilters, currentFilters,
+  return new ManageFiltersDlg(parent, core, MapFilters, currentFilters,
                               activefilterpool, activefiltername,
                               bFilterActive, bCanHaveAttachments,
                               psMediaTypes, readOnly,
@@ -751,7 +752,7 @@ void ManageFiltersDlg::DoNewClick()
   while(bDoEdit) {
     bDoEdit = false; // In formal case we run only one time in the loop; but when removal of double entry is requested we avoid goto
 
-    int rc = ShowModalAndGetResult<SetFiltersDlg>(&filters, m_pCurrentFilters, &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, m_bCanHaveAttachments, m_psMediaTypes);
+    int rc = ShowModalAndGetResult<SetFiltersDlg>(this, &filters, m_pCurrentFilters, &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, m_bCanHaveAttachments, m_psMediaTypes);
     
     if(bActiveFilter && ! *m_pbFilterActive) {
       // On filter active before and now no filter active take back usage flag
@@ -851,7 +852,7 @@ void ManageFiltersDlg::DoEditClick()
   while(bDoEdit) { // Loop to avoid goto
     bDoEdit = false;  // In formal case we run only one time in the loop; but when removal of double entry is requested we avoid goto
 
-    int rc = ShowModalAndGetResult<SetFiltersDlg>(&filters, m_pCurrentFilters, &bAppliedCalled, DFTYPE_MAIN, fk.fpool, m_bCanHaveAttachments, m_psMediaTypes);
+    int rc = ShowModalAndGetResult<SetFiltersDlg>(this, &filters, m_pCurrentFilters, &bAppliedCalled, DFTYPE_MAIN, fk.fpool, m_bCanHaveAttachments, m_psMediaTypes);
     
     if(bActiveFilter && ! *m_pbFilterActive) {
       // On filter active before and now no filter active take back usage flag

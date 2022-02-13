@@ -26,10 +26,10 @@ class MergeDlg : public wxDialog
   DECLARE_EVENT_TABLE()
   
 public:
-  static MergeDlg* Create(PWScore* core, const wxString &filename = wxEmptyString);
+  static MergeDlg* Create(wxWindow *parent, PWScore* core, const wxString &filename = wxEmptyString);
   ~MergeDlg();
 protected:
-  MergeDlg(PWScore* core, const wxString &filename);
+  MergeDlg(wxWindow *parent, PWScore* core, const wxString &filename);
   void OnAdvancedSelection( wxCommandEvent& evt );
 public:
   wxString GetOtherSafePath() const;

@@ -58,13 +58,14 @@ END_EVENT_TABLE()
  * EditShortcutDlg constructors
  */
 
-EditShortcutDlg::EditShortcutDlg(PWScore &core, CItemData *shortcut)
+EditShortcutDlg::EditShortcutDlg(wxWindow *parent, PWScore &core, CItemData *shortcut)
 : m_Core(core), m_Shortcut(shortcut)
 {
   ASSERT(m_Shortcut != nullptr);
+  wxASSERT(!parent || parent->IsTopLevel());
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(nullptr, wxID_ANY, _("Edit Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(parent, wxID_ANY, _("Edit Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -78,9 +79,9 @@ EditShortcutDlg::EditShortcutDlg(PWScore &core, CItemData *shortcut)
 
 }
 
-EditShortcutDlg* EditShortcutDlg::Create(PWScore &core, CItemData *shortcut)
+EditShortcutDlg* EditShortcutDlg::Create(wxWindow *parent, PWScore &core, CItemData *shortcut)
 {
-  return new EditShortcutDlg(core, shortcut);
+  return new EditShortcutDlg(parent, core, shortcut);
 }
 
 void EditShortcutDlg::ItemFieldsToDialog()

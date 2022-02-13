@@ -59,16 +59,18 @@ END_EVENT_TABLE()
  * PropertiesDlg constructors
  */
 
-PropertiesDlg::PropertiesDlg(const PWScore &core,
+PropertiesDlg::PropertiesDlg(wxWindow *parent, const PWScore &core,
                          wxWindowID id, const wxString& caption,
                          const wxPoint& pos, const wxSize& size, long style)
   : m_core(core)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   Init();
 
 ////@begin PropertiesDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -79,11 +81,11 @@ PropertiesDlg::PropertiesDlg(const PWScore &core,
 ////@end PropertiesDlg creation
 }
 
-PropertiesDlg* PropertiesDlg::Create(const PWScore &core,
+PropertiesDlg* PropertiesDlg::Create(wxWindow *parent, const PWScore &core,
                          wxWindowID id, const wxString& caption,
                          const wxPoint& pos, const wxSize& size, long style)
 {
-  return new PropertiesDlg(core, id, caption, pos, size, style);
+  return new PropertiesDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!

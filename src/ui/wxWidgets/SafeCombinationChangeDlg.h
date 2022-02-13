@@ -69,13 +69,13 @@ class SafeCombinationChangeDlg : public wxDialog
 
 public:
   /// Constructors
-  static SafeCombinationChangeDlg* Create(PWScore &core,
+  static SafeCombinationChangeDlg* Create(wxWindow *parent, PWScore &core,
                          wxWindowID id = SYMBOL_SAFECOMBINATIONCHANGEDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONCHANGEDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONCHANGEDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONCHANGEDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONCHANGEDLG_STYLE );
   /// Destructor
   ~SafeCombinationChangeDlg();
 protected:
   /// Constructors
-  SafeCombinationChangeDlg(PWScore &core,wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
+  SafeCombinationChangeDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();

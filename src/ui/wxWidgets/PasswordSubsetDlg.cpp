@@ -54,13 +54,14 @@ END_EVENT_TABLE()
 /*!
  * PasswordSubsetDlg constructors
  */
-PasswordSubsetDlg::PasswordSubsetDlg(const StringX &password,
+PasswordSubsetDlg::PasswordSubsetDlg(wxWindow *parent, const StringX &password,
                                   wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
   : m_password(password)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin PasswordSubsetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -71,10 +72,10 @@ PasswordSubsetDlg::PasswordSubsetDlg(const StringX &password,
 ////@end PasswordSubsetDlg creation
 }
 
-PasswordSubsetDlg* PasswordSubsetDlg::Create(const StringX &password,
+PasswordSubsetDlg* PasswordSubsetDlg::Create(wxWindow *parent, const StringX &password,
   wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-  return new PasswordSubsetDlg(password, id, caption, pos, size, style);
+  return new PasswordSubsetDlg(parent, password, id, caption, pos, size, style);
 }
 
 /*!

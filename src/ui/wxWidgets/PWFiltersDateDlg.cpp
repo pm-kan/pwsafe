@@ -66,16 +66,18 @@ END_EVENT_TABLE()
  * pwFiltersDateDlg constructors
  */
 
-pwFiltersDateDlg::pwFiltersDateDlg(FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype)
+pwFiltersDateDlg::pwFiltersDateDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype)
 : m_ftype(ftype), m_add_present(false), m_min(-1), m_max(-1),
   m_prule(rule), m_pfdate1(fdate1), m_pfdate2(fdate2), 
   m_pfnum1(fnum1), m_pfnum2(fnum2),
   m_pfdatetype(fdatetype)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   Init();
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create(nullptr, wxID_ANY, _("Display Filter Date Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  wxDialog::Create(parent, wxID_ANY, _("Display Filter Date Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
   CreateControls();
 
@@ -86,9 +88,9 @@ pwFiltersDateDlg::pwFiltersDateDlg(FieldType ftype, PWSMatch::MatchRule *rule, t
   SetValidators();
 }
 
-pwFiltersDateDlg* pwFiltersDateDlg::Create(FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype)
+pwFiltersDateDlg* pwFiltersDateDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype)
 {
-  return new pwFiltersDateDlg(ftype, rule, fdate1, fdate2, fnum1, fnum2, fdatetype);
+  return new pwFiltersDateDlg(parent, ftype, rule, fdate1, fdate2, fnum1, fnum2, fdatetype);
 }
 
 /*!

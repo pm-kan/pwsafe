@@ -150,13 +150,13 @@ class OptionsPropertySheetDlg : public wxPropertySheetDialog
 
 public:
   /// Constructors
-  static OptionsPropertySheetDlg* Create(PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
+  static OptionsPropertySheetDlg* Create(wxWindow *parent, PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
 
   /// Destructor
   ~OptionsPropertySheetDlg();
 protected:
   /// Constructors
-  OptionsPropertySheetDlg(PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
+  OptionsPropertySheetDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();

@@ -63,14 +63,16 @@ const cstringT AboutDlg::s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
  * AboutDlg constructors
  */
 
-AboutDlg::AboutDlg(wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+AboutDlg::AboutDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   // Print version information on standard output which might be useful for error reports.
   pws_os::Trace(GetLibWxVersion().wc_str());
   pws_os::Trace(GetLibCurlVersion().wc_str());
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -86,9 +88,9 @@ AboutDlg::AboutDlg(wxWindowID id, const wxString& caption, const wxPoint& pos, c
   Centre();
 }
 
-AboutDlg* AboutDlg::Create(wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+AboutDlg* AboutDlg::Create(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-  return new AboutDlg(id, caption, pos, size, style);
+  return new AboutDlg(parent, id, caption, pos, size, style);
 }
 
 /*!
@@ -418,7 +420,7 @@ bool AboutDlg::CheckDatabaseStatus()
     pwsafe->CloseDB([](bool closed) {
       if (closed) {
         // database closed, reopen dialog and check
-        DestroyWrapper<AboutDlg> wrapper;
+        DestroyWrapper<AboutDlg> wrapper(wxGetApp().GetPasswordSafeFrame());
         wrapper.Get()->ShowAndCheckForUpdate();
       }
     });

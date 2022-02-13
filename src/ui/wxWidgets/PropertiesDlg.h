@@ -72,7 +72,7 @@ class PropertiesDlg : public wxDialog
 
 public:
   
-  static PropertiesDlg* Create(const PWScore &core,
+  static PropertiesDlg* Create(wxWindow *parent, const PWScore &core,
               wxWindowID id = SYMBOL_PROPERTIESDLG_IDNAME,
               const wxString& caption = SYMBOL_PROPERTIESDLG_TITLE,
               const wxPoint& pos = SYMBOL_PROPERTIESDLG_POSITION,
@@ -82,7 +82,7 @@ public:
   ~PropertiesDlg() = default;
 protected:
   /// Constructors
-  PropertiesDlg(const PWScore &core,
+  PropertiesDlg(wxWindow *parent, const PWScore &core,
               wxWindowID id, const wxString& caption,
               const wxPoint& pos, const wxSize& size, long style);
 

@@ -37,7 +37,7 @@ public:
   StringX           passKey;
   wxString          delimiter;
 protected:
-  ExportTextWarningDlgBase();
+  explicit ExportTextWarningDlgBase(wxWindow *parent);
   ~ExportTextWarningDlgBase();
 
   void OnAdvancedSelection( wxCommandEvent& evt );
@@ -57,17 +57,17 @@ template <class DlgType>
 class ExportTextWarningDlg : public ExportTextWarningDlgBase
 {
 public:
-  static ExportTextWarningDlg* Create() {
-    return new ExportTextWarningDlg();
+  static ExportTextWarningDlg* Create(wxWindow *parent) {
+    return new ExportTextWarningDlg(parent);
   }
 protected:
-  ExportTextWarningDlg() : ExportTextWarningDlgBase()
+  explicit ExportTextWarningDlg(wxWindow *parent) : ExportTextWarningDlgBase(parent)
   {
     SetTitle(DlgType::GetTitle());
   }
 
   virtual void DoAdvancedSelection() {
-    ShowModalAndGetResult<AdvancedSelectionDlg<DlgType>>(selCriteria);
+    ShowModalAndGetResult<AdvancedSelectionDlg<DlgType>>(this, selCriteria);
   }
 };
 

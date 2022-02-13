@@ -62,11 +62,11 @@ class pwFiltersDateDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  static pwFiltersDateDlg* Create(FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype);
+  static pwFiltersDateDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype);
 
 protected:
   /// Constructors
-  pwFiltersDateDlg(FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype);
+  pwFiltersDateDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype);
 
   /// Destructor
   virtual ~pwFiltersDateDlg() = default;

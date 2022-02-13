@@ -83,19 +83,21 @@ END_EVENT_TABLE()
 /*!
  * SafeCombinationEntryDlg constructors
  */
-SafeCombinationEntryDlg::SafeCombinationEntryDlg(PWScore &core,
+SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow *parent, PWScore &core,
                                              wxWindowID id,
                                              const wxString& caption,
                                              const wxPoint& pos,
                                              const wxSize& size, long style)
   : m_core(core)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   m_filename = m_core.GetCurFile().c_str();
 
 ////@begin SafeCombinationEntryDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -117,10 +119,10 @@ SafeCombinationEntryDlg::SafeCombinationEntryDlg(PWScore &core,
 #endif
 }
 
-SafeCombinationEntryDlg* SafeCombinationEntryDlg::Create(PWScore &core,
+SafeCombinationEntryDlg* SafeCombinationEntryDlg::Create(wxWindow *parent, PWScore &core,
   wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-  return new SafeCombinationEntryDlg(core, id, caption, pos, size, style);
+  return new SafeCombinationEntryDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!
@@ -546,7 +548,7 @@ void SafeCombinationEntryDlg::DoNewDbClick()
   }
   // 2. Get a password
 
-  DestroyWrapper<SafeCombinationSetupDlg> pksetupWrapper;
+  DestroyWrapper<SafeCombinationSetupDlg> pksetupWrapper(this);
   SafeCombinationSetupDlg* pksetup = pksetupWrapper.Get();
 
   if (pksetup->ShowModal() != wxID_OK)

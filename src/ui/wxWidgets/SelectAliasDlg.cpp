@@ -213,7 +213,7 @@ void SelectTreeCtrl::OnMouseRightClick(wxMouseEvent& event)
  * SelectAliasDlg constructors
  */
 
-SelectAliasDlg::SelectAliasDlg(PWScore *core,
+SelectAliasDlg::SelectAliasDlg(wxWindow *parent, PWScore *core,
                              CItemData *item,
                              CItemData **pbci,
                              wxWindowID id, const wxString& caption,
@@ -222,6 +222,8 @@ SelectAliasDlg::SelectAliasDlg(PWScore *core,
                                             m_Item(item),
                                             m_BaseItem(pbci)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   if(m_Core && m_Item && m_BaseItem) {
     CItemData *pbci = m_Core->GetBaseEntry(m_Item);
     if(pbci) {
@@ -233,9 +235,9 @@ SelectAliasDlg::SelectAliasDlg(PWScore *core,
       *m_BaseItem = pbci;
     }
   }
-////@begin SelectAliasDlg creation
+  ////@begin SelectAliasDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -246,14 +248,14 @@ SelectAliasDlg::SelectAliasDlg(PWScore *core,
 ////@end SelectAliasDlg creation
 }
 
-SelectAliasDlg* SelectAliasDlg::Create(PWScore *core,
+SelectAliasDlg* SelectAliasDlg::Create(wxWindow *parent, PWScore *core,
                              CItemData *item,
                              CItemData **pbci,
                              wxWindowID id, const wxString& caption,
                              const wxPoint& pos, const wxSize& size,
                              long style)
 {
-  return new SelectAliasDlg(core, item, pbci, id, caption, pos, size, style);
+  return new SelectAliasDlg(parent, core, item, pbci, id, caption, pos, size, style);
 }
 
 /*!
@@ -554,6 +556,6 @@ void SelectTreeCtrl::DoViewClick()
   if(m_menu_item) {
     CItemData item = *m_menu_item;
     item.SetProtected(true);
-    ShowModalAndGetResult<AddEditPropSheetDlg>(m_core, AddEditPropSheetDlg::SheetType::VIEW, &item);
+    ShowModalAndGetResult<AddEditPropSheetDlg>(this, m_core, AddEditPropSheetDlg::SheetType::VIEW, &item);
   }
 }

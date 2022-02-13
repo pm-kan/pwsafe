@@ -56,11 +56,11 @@ class pwFiltersPasswordDlg : public wxDialog
 
 public:
   /// Constructors
-  static pwFiltersPasswordDlg* Create(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1);
+  static pwFiltersPasswordDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1);
 
 protected:
   /// Constructors
-  pwFiltersPasswordDlg(FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1);
+  pwFiltersPasswordDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1);
 
   /// Destructor
   virtual ~pwFiltersPasswordDlg() = default;

@@ -44,14 +44,14 @@ class CreateShortcutDlg : public wxDialog
 
 public:
   /// Creation
-  static CreateShortcutDlg* Create(PWScore &core, CItemData *base);
+  static CreateShortcutDlg* Create(wxWindow *parent, PWScore &core, CItemData *base);
 
   /// Destructor
   virtual ~CreateShortcutDlg() = default;
 
 protected:
   /// Constructors
-  CreateShortcutDlg(PWScore &core, CItemData *base);
+  CreateShortcutDlg(wxWindow *parent, PWScore &core, CItemData *base);
 
   /// Creates the controls and sizers
   void CreateControls();

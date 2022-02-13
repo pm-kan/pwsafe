@@ -75,7 +75,7 @@ class SafeCombinationEntryDlg: public wxDialog
 
 public:
   /// Constructors
-  static SafeCombinationEntryDlg* Create(PWScore &core,
+  static SafeCombinationEntryDlg* Create(wxWindow *parent, PWScore &core,
     wxWindowID id = SYMBOL_SAFECOMBINATIONENTRYDLG_IDNAME, 
     const wxString& caption = SYMBOL_SAFECOMBINATIONENTRYDLG_TITLE, 
     const wxPoint& pos = SYMBOL_SAFECOMBINATIONENTRYDLG_POSITION, 
@@ -85,7 +85,7 @@ public:
   /// Destructor
   ~SafeCombinationEntryDlg();
 protected:
-  SafeCombinationEntryDlg(PWScore &core,
+  SafeCombinationEntryDlg(wxWindow *parent, PWScore &core,
     wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers

@@ -136,7 +136,7 @@ public:
   }; // to tweak UI, mainly
 
   // item is nullptr for ADD, otherwise its values are retrieved and displayed
-  static AddEditPropSheetDlg* Create(PWScore &core,
+  static AddEditPropSheetDlg* Create(wxWindow *parent, PWScore &core,
                       SheetType type, const CItemData *item = nullptr,
                       const wxString &selectedGroup = wxEmptyString,
                       wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME,
@@ -149,7 +149,7 @@ public:
   ~AddEditPropSheetDlg() = default;
 protected:
   /// Constructor
-  AddEditPropSheetDlg(PWScore &core,
+  AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
                       SheetType type, const CItemData *item, const wxString &selectedGroup,
                       wxWindowID id,const wxString &caption, 
                       const wxPoint &pos, const wxSize &size, long style);

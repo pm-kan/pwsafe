@@ -69,7 +69,7 @@ END_EVENT_TABLE()
  * SafeCombinationPromptDlg constructors
  */
 
-SafeCombinationPromptDlg::SafeCombinationPromptDlg(PWScore &core,
+SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &core,
                                                const wxString &fname, const bool allowExit,
                                                wxWindowID id,
                                                const wxString& caption,
@@ -77,9 +77,10 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(PWScore &core,
                                                const wxSize& size, long style)
 : m_core(core), m_filename(fname), m_tries(0), m_allowExit(allowExit)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationPromptDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( nullptr, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
   if (GetSizer())
@@ -98,14 +99,14 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(PWScore &core,
 }
 
 
-SafeCombinationPromptDlg* SafeCombinationPromptDlg::Create(PWScore &core,
+SafeCombinationPromptDlg* SafeCombinationPromptDlg::Create(wxWindow *parent, PWScore &core,
                                                const wxString &fname, const bool allowExit,
                                                wxWindowID id,
                                                const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
 {
-  return new SafeCombinationPromptDlg(core, fname, allowExit, id, caption, pos, size, style);
+  return new SafeCombinationPromptDlg(parent, core, fname, allowExit, id, caption, pos, size, style);
 }
 
 /*!

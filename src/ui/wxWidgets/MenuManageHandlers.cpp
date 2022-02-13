@@ -54,7 +54,7 @@ void PasswordSafeFrame::OnChangePasswordClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::DoChangePassword()
 {
-  DestroyWrapper<SafeCombinationChangeDlg> windowWrapper(m_core);
+  DestroyWrapper<SafeCombinationChangeDlg> windowWrapper(this, m_core);
   SafeCombinationChangeDlg* window = windowWrapper.Get();
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
@@ -82,7 +82,7 @@ void PasswordSafeFrame::DoPreferencesClick()
   bool autoAdjColWidth = prefs->GetPref(PWSprefs::AutoAdjColWidth);
   bool toolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
   const StringX sxOldDBPrefsString(prefs->Store());
-  DestroyWrapper<OptionsPropertySheetDlg> windowWrapper(m_core);
+  DestroyWrapper<OptionsPropertySheetDlg> windowWrapper(this, m_core);
   OptionsPropertySheetDlg* window = windowWrapper.Get();
 
   if (window->ShowModal() == wxID_OK) {
@@ -232,7 +232,7 @@ void PasswordSafeFrame::DoRestoreSafe()
   }
 #endif
 
-  DestroyWrapper<SafeCombinationPromptDlg> pwdprompt(m_core, wxbf, false);
+  DestroyWrapper<SafeCombinationPromptDlg> pwdprompt(this, m_core, wxbf, false);
   if (pwdprompt.Get()->ShowModal() == wxID_OK) {
     const StringX passkey = pwdprompt.Get()->GetPassword();
     // unlock the file we're leaving
@@ -278,7 +278,7 @@ void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
 
 void PasswordSafeFrame::DoPwdPolsMClick()
 {
-  ShowModalAndGetResult<ManagePasswordPoliciesDlg>(m_core);
+  ShowModalAndGetResult<ManagePasswordPoliciesDlg>(this, m_core);
 }
 
 /*!
@@ -299,7 +299,7 @@ void PasswordSafeFrame::DoGeneratePassword()
 
   customPolicies[std2stringx(defaultName)] = defaultPolicy;
 
-  DestroyWrapper<PasswordPolicyDlg> ppdlg(m_core, customPolicies, PasswordPolicyDlg::DialogType::GENERATOR);
+  DestroyWrapper<PasswordPolicyDlg> ppdlg(this, m_core, customPolicies, PasswordPolicyDlg::DialogType::GENERATOR);
   ppdlg.Get()->SetPolicyData(defaultName, defaultPolicy);
 
   ppdlg.Get()->ShowModal();
@@ -317,7 +317,7 @@ void PasswordSafeFrame::OnYubikeyMngClick(wxCommandEvent& WXUNUSED(event))
 
 void PasswordSafeFrame::DoYubikeyMngClick()
 {
-  ShowModalAndGetResult<YubiCfgDlg>(m_core);
+  ShowModalAndGetResult<YubiCfgDlg>(this, m_core);
 }
 #endif
 
@@ -428,7 +428,7 @@ bool PasswordSafeFrame::ChangeMode(bool promptUser)
   } else if (promptUser) { // R-O -> R/W
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    int rc = ShowModalAndGetResult<SafeCombinationPromptDlg>(m_core, towxstring(m_core.GetCurFile()), false);
+    int rc = ShowModalAndGetResult<SafeCombinationPromptDlg>(this, m_core, towxstring(m_core.GetCurFile()), false);
 
     if(rc != wxID_OK)
       return false;
