@@ -2429,9 +2429,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   if (restoreUI) {
-    if (!IsShown()) {
-      ShowHiddenWindows();
-    }
+    ShowHiddenWindows();
+
     if (IsIconized()) {
       Iconize(false);
     }
