@@ -2065,7 +2065,9 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   if (tostringx(m_RunCommand) != m_Item.GetRunCommand()) {
     changes |= Changes::RunCommand;
   }
-  if (PreparePasswordHistory() != m_Item.GetPWHistory()) {
+  if (PreparePasswordHistory() != m_Item.GetPWHistory() && 
+      !(m_Item.GetPWHistory().empty() && m_PasswordHistory.empty() && static_cast<unsigned int>(m_MaxPasswordHistory) == prefs->GetPref(PWSprefs::NumPWHistoryDefault) && m_KeepPasswordHistory == prefs->GetPref(PWSprefs::SavePasswordHistory))
+  ) {
     changes |= Changes::History;
   }
   // symbols
@@ -2078,16 +2080,18 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   {
     short lastDCA;
     m_Item.GetDCA(lastDCA);
-    const auto selected = GetSelectedDCA(m_AdditionalDoubleClickActionCtrl, short(prefs->GetPref(PWSprefs::DoubleClickAction)));
-    if (lastDCA != selected) {
+    const auto def = short(prefs->GetPref(PWSprefs::DoubleClickAction));
+    const auto selected = GetSelectedDCA(m_AdditionalDoubleClickActionCtrl, def);
+    if (lastDCA != selected && lastDCA != def) {
       changes |= Changes::DCA;
     }
   }
   {
     short lastShiftDCA;
     m_Item.GetShiftDCA(lastShiftDCA);
-    const auto selected = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
-    if (lastShiftDCA != selected) {
+    const auto def = short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction));
+    const auto selected = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, def);
+    if (lastShiftDCA != selected && lastShiftDCA != def) {
       changes |= Changes::ShiftDCA;
     }
   }
@@ -2101,7 +2105,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   {
     int lastXTimeInt;
     m_Item.GetXTimeInt(lastXTimeInt);
-    if ((m_Recurring && m_ExpirationTimeInterval != lastXTimeInt) || (!m_Recurring && lastXTimeInt != 0)) {
+    if (m_ExpirationTimeInterval != lastXTimeInt && !(!m_Recurring && lastXTimeInt == 0)) {
       changes |= Changes::XTimeInt;
     }
   }
@@ -2180,8 +2184,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
 
 StringX AddEditPropSheetDlg::PreparePasswordHistory() const
 {
-  // Create a new PWHistory string based on settings in this dialog, and compare it
-  // with the PWHistory string from the item being edited, to see if the user modified it.
+  // Create a new PWHistory string based on settings in this dialog.
   // Note that we are not erasing the history here, even if the user has chosen to not
   // track PWHistory.  So there could be some password entries in the history
   // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
@@ -2195,6 +2198,7 @@ StringX AddEditPropSheetDlg::PreparePasswordHistory() const
 
   // Create a new PWHistory header, as per settings in this dialog
   size_t numEntries = std::min(pwhl.size(), static_cast<size_t>(m_MaxPasswordHistory));
+
   result = MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, numEntries);
   //reverse-sort the history entries to retain only the newest
   std::sort(pwhl.begin(), pwhl.end(), newer());
