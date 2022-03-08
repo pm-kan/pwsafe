@@ -2854,7 +2854,7 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
     wxTopLevelWindow* win = *itr;
     if (win) {
       if (win->IsShown()) {
-        pws_os::Trace(L"Closing %ls (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
+        pws_os::Trace(L"Closing <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
         if (win->Close((flags & CloseFlags::CLOSE_FORCED) == CloseFlags::CLOSE_FORCED)) {
           if (itr == lastWindowItr) {
             // main windows closed, no need to schedule new check
@@ -2869,13 +2869,13 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
           }
         }
         else {
-          pws_os::Trace(L"Close for %ls (%ls) vetoed, flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
+          pws_os::Trace(L"Close for <%ls> (%ls) vetoed, flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
           vetoed = true;
           break;
         }
       }
       else {
-        pws_os::Trace(L"Skip closing of hidden window %ls (%ls)\n", ToStr(win->GetTitle()), ToStr(win->GetName()));
+        pws_os::Trace(L"Skip closing of hidden window <%ls> (%ls)\n", ToStr(win->GetTitle()), ToStr(win->GetName()));
       }
     }
     ++itr;
@@ -2949,8 +2949,8 @@ std::vector<wxTopLevelWindow*> PasswordSafeFrame::GetTopLevelWindowsList() const
   std::vector<wxTopLevelWindow*> hiddenWindows;
   hiddenWindows.reserve(wxTopLevelWindows.size());
   // wxTopLevelWindows is global exported list of top level windows
-  for (auto itr = wxTopLevelWindows.begin(); itr != wxTopLevelWindows.end(); ++itr) {
-    wxTopLevelWindow* win = wxDynamicCast(*itr, wxTopLevelWindow);
+  for (const auto tlv : wxTopLevelWindows) {
+    auto* win = wxDynamicCast(tlv, wxTopLevelWindow);
     if (win && win->IsShown()) {
       hiddenWindows.push_back(win);
     }
@@ -2958,18 +2958,29 @@ std::vector<wxTopLevelWindow*> PasswordSafeFrame::GetTopLevelWindowsList() const
   // but some dialogs aren't registered in wxTopLevelWindows, so get them from dialog tracker
   // it's O(n^2), but usually we have less than 10
   for (const auto& dialog : m_shownDialogs) {
-    if (dialog && dialog->IsShown()) {
-        bool registered = std::find(hiddenWindows.begin(), hiddenWindows.end(), dialog) != hiddenWindows.end();
-        if (!registered) {
-          pws_os::Trace(L"Dialog not registered in wxTopLevelWindows %ls (%ls)\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
-          // attempt to register window after it's parent
-          const auto parent = dialog->GetParent();
-          auto parentIter = std::find(hiddenWindows.begin(), hiddenWindows.end(), parent);
-          if (parentIter != hiddenWindows.end()) {
-            ++parentIter;
-          }
-          hiddenWindows.insert(parentIter, dialog);
+    if (!dialog) {
+      continue;
+    }
+    bool shown = dialog->IsShown();
+#if defined(__WXGTK__)
+    if (!shown && wxDynamicCast(dialog, wxMessageDialog)) {
+      // wxMessageDialog don't set needed m_shown and m_modalShowing flags in ShowModal, so just log it
+      // (we even can't close them, because m_modalShowing isn't set and Close event isn't processed)
+      pws_os::Trace(L"Message dialog <%ls> (%ls) can't be hidden/closed\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
+    }
+#endif
+    if (shown) {
+      bool registered = std::find(hiddenWindows.begin(), hiddenWindows.end(), dialog) != hiddenWindows.end();
+      if (!registered) {
+        pws_os::Trace(L"Dialog not registered in wxTopLevelWindows <%ls> (%ls)\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
+        // attempt to register window after it's parent
+        const auto parent = dialog->GetParent();
+        auto parentIter = std::find(hiddenWindows.begin(), hiddenWindows.end(), parent);
+        if (parentIter != hiddenWindows.end()) {
+          ++parentIter;
         }
+        hiddenWindows.insert(parentIter, dialog);
+      }
     }
   }
   return hiddenWindows;
@@ -2978,24 +2989,22 @@ std::vector<wxTopLevelWindow*> PasswordSafeFrame::GetTopLevelWindowsList() const
 void PasswordSafeFrame::HideTopLevelWindows()
 {
   auto windows = GetTopLevelWindowsList();
-
   // hiding windows in reverse order
   for (auto itr = windows.rbegin(); itr != windows.rend(); ++itr) {
-      wxTopLevelWindow* win = *itr;
-      //Don't call Hide() here, which just calls Show(false), which is overridden in
-      //derived classes, and wxDialog actually cancels the modal loop and closes the window
-      pws_os::Trace(L"Hide window %ls (%ls)\n", ToStr(win->GetTitle()), ToStr(win->GetName()));
-      win->ClearBackground();
-      win->wxWindow::Show(false);
+    wxTopLevelWindow* win = *itr;
+    //Don't call Hide() here, which just calls Show(false), which is overridden in
+    //derived classes, and wxDialog actually cancels the modal loop and closes the window
+    pws_os::Trace(L"Hide window <%ls> (%ls)\n", ToStr(win->GetTitle()), ToStr(win->GetName()));
+    win->ClearBackground();
+    win->wxWindow::Show(false);
   }
   m_hiddenWindows = std::move(windows);
 }
 
 void PasswordSafeFrame::ShowHiddenWindows()
 {
-  for(auto itr = m_hiddenWindows.begin(); itr != m_hiddenWindows.end(); ++itr) {
-    wxTopLevelWindow* win = *itr;
-    pws_os::Trace(L"Show window %ls\n", ToStr(win->GetTitle()));
+  for(const auto win : m_hiddenWindows) {
+    pws_os::Trace(L"Show window <%ls>\n", ToStr(win->GetTitle()));
     win->wxWindow::Show(true);
     win->Raise();
     win->Update();
