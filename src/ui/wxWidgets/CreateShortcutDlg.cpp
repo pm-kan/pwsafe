@@ -48,7 +48,8 @@ IMPLEMENT_CLASS( CreateShortcutDlg, wxDialog )
 BEGIN_EVENT_TABLE( CreateShortcutDlg, wxDialog )
 
   EVT_BUTTON( wxID_OK, CreateShortcutDlg::OnOk )
-
+  EVT_CLOSE( CreateShortcutDlg::OnClose )
+  EVT_BUTTON( wxID_CANCEL, CreateShortcutDlg::OnCancel )
 END_EVENT_TABLE()
 
 /*!
@@ -112,7 +113,7 @@ void CreateShortcutDlg::ItemFieldsToDialog()
     m_BaseEntryTitle = stringx2std(m_Base->GetTitle());
     m_BaseEntryUsername = stringx2std(m_Base->GetUser());
 
-    m_ShortcutTitle = _("Shortcut to ") + m_BaseEntryTitle;
+    m_ShortcutTitle = GetDefaultShortcutTitle();
     m_ShortcutUsername = m_BaseEntryUsername;
 
     if (m_Base->IsGroupSet() && !(m_Base->GetGroup().empty())) {
@@ -137,9 +138,10 @@ void CreateShortcutDlg::ItemFieldsToDialog()
     m_ShortcutTitle = wxEmptyString;
     m_ShortcutUsername = wxEmptyString;
 
-    m_BaseEntryGroup = _("N/A");
-    m_BaseEntryTitle = _("N/A");
-    m_BaseEntryUsername = _("N/A");
+    // set base values to empty too/ to siplify change detection
+    m_BaseEntryGroup = wxEmptyString;
+    m_BaseEntryTitle = wxEmptyString;
+    m_BaseEntryUsername = wxEmptyString;
   }
 }
 
@@ -298,4 +300,65 @@ void CreateShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     );
   }
   EndModal(wxID_OK);
+}
+
+bool CreateShortcutDlg::SyncAndQueryCancel(bool showDialog) {
+  // when edit forbidden, allow cancel without additional checks
+  if (m_Core.IsReadOnly()) {
+    return true;
+  }
+  else if (!(Validate() && TransferDataFromWindow()) || GetChanges() != Changes::None) {
+    if (showDialog) {
+      auto res = wxMessageDialog(
+        nullptr,
+        _("One or more preferences have been changed. Are you sure you wish to cancel?"), wxEmptyString,
+        wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION  
+      ).ShowModal();
+      if (res == wxID_YES) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return true;
+}
+
+void CreateShortcutDlg::OnCancel(wxCommandEvent&)
+{
+  if (SyncAndQueryCancel(true)) {
+    EndModal(wxID_CANCEL);
+  }
+}
+
+void CreateShortcutDlg::OnClose(wxCloseEvent &event)
+{
+  if (event.CanVeto()) {
+    // when trying to closing app/db, don't ask questions when data changed
+    if (!SyncAndQueryCancel(!IsCloseInProgress())) {
+      event.Veto();
+      return;
+    }
+  }
+  EndDialog(wxID_CANCEL); // cancel directly (if we skip event, OnCancel will be called and ask one more time)
+}
+
+uint32_t CreateShortcutDlg::GetChanges() const
+{
+  uint32_t changes = Changes::None;
+  if (m_ShortcutTitle != GetDefaultShortcutTitle()) {
+      changes |= Changes::Title;
+  }
+  if (m_ShortcutUsername != m_BaseEntryUsername) {
+    changes |= Changes::User;
+  }
+    
+  if (m_ShortcutGroup != m_BaseEntryGroup) {
+    changes |= Changes::Group;
+  }
+  return changes;
+}
+
+wxString CreateShortcutDlg::GetDefaultShortcutTitle() const
+{
+  return _("Shortcut to ") + m_BaseEntryTitle;
 }

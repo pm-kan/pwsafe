@@ -70,9 +70,23 @@ private:
   void ItemFieldsToDialog();
   void SetValidators();
   void UpdateControls();
+  bool SyncAndQueryCancel(bool showDialog);
 
+  enum Changes : uint32_t {
+    None = 0,
+    Group = 1u,
+    Title = 1u << 1,
+    User = 1u << 2,
+  };
+  
+  uint32_t GetChanges() const;
+  
+  wxString GetDefaultShortcutTitle() const;
+  
   //(*Handlers(CreateShortcutDlg)
   void OnOk(wxCommandEvent& event);
+  void OnCancel(wxCommandEvent &event);
+  void OnClose(wxCloseEvent &event);
   //*)
 
   //(*Identifiers(CreateShortcutDlg)
