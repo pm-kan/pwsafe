@@ -18,13 +18,13 @@
  */
 
 #include <wx/choice.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 
 #include "core/ItemData.h"
 #include "core/PWScore.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -37,7 +37,7 @@
  * CreateShortcutDlg class declaration
  */
 
-class CreateShortcutDlg : public wxDialog
+class CreateShortcutDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(CreateShortcutDlg)
   DECLARE_EVENT_TABLE()
@@ -80,13 +80,12 @@ private:
   };
   
   uint32_t GetChanges() const;
-  
+  bool IsChanged() const override;
+
   wxString GetDefaultShortcutTitle() const;
   
   //(*Handlers(CreateShortcutDlg)
   void OnOk(wxCommandEvent& event);
-  void OnCancel(wxCommandEvent &event);
-  void OnClose(wxCloseEvent &event);
   //*)
 
   //(*Identifiers(CreateShortcutDlg)

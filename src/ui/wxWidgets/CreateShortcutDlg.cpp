@@ -49,7 +49,7 @@ BEGIN_EVENT_TABLE( CreateShortcutDlg, wxDialog )
 
   EVT_BUTTON( wxID_OK, CreateShortcutDlg::OnOk )
   EVT_CLOSE( CreateShortcutDlg::OnClose )
-  EVT_BUTTON( wxID_CANCEL, CreateShortcutDlg::OnCancel )
+  EVT_BUTTON( wxID_CANCEL, CreateShortcutDlg::OnCancelClick )
 END_EVENT_TABLE()
 
 /*!
@@ -307,39 +307,7 @@ bool CreateShortcutDlg::SyncAndQueryCancel(bool showDialog) {
   if (m_Core.IsReadOnly()) {
     return true;
   }
-  else if (!(Validate() && TransferDataFromWindow()) || GetChanges() != Changes::None) {
-    if (showDialog) {
-      auto res = wxMessageDialog(
-        nullptr,
-        _("One or more preferences have been changed. Are you sure you wish to cancel?"), wxEmptyString,
-        wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION  
-      ).ShowModal();
-      if (res == wxID_YES) {
-        return true;
-      }
-    }
-    return false;
-  }
-  return true;
-}
-
-void CreateShortcutDlg::OnCancel(wxCommandEvent&)
-{
-  if (SyncAndQueryCancel(true)) {
-    EndModal(wxID_CANCEL);
-  }
-}
-
-void CreateShortcutDlg::OnClose(wxCloseEvent &event)
-{
-  if (event.CanVeto()) {
-    // when trying to closing app/db, don't ask questions when data changed
-    if (!SyncAndQueryCancel(!IsCloseInProgress())) {
-      event.Veto();
-      return;
-    }
-  }
-  EndDialog(wxID_CANCEL); // cancel directly (if we skip event, OnCancel will be called and ask one more time)
+  return QueryCancelDlg::SyncAndQueryCancel(showDialog);
 }
 
 uint32_t CreateShortcutDlg::GetChanges() const
@@ -356,6 +324,10 @@ uint32_t CreateShortcutDlg::GetChanges() const
     changes |= Changes::Group;
   }
   return changes;
+}
+
+bool CreateShortcutDlg::IsChanged() const {
+  return GetChanges() != Changes::None;
 }
 
 wxString CreateShortcutDlg::GetDefaultShortcutTitle() const

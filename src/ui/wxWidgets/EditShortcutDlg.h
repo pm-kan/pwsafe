@@ -18,13 +18,13 @@
  */
 
 #include <wx/combobox.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 
 #include "core/ItemData.h"
 #include "core/PWScore.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -37,7 +37,7 @@
  * EditShortcutDlg class declaration
  */
 
-class EditShortcutDlg : public wxDialog
+class EditShortcutDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(EditShortcutDlg)
   DECLARE_EVENT_TABLE()
@@ -82,11 +82,10 @@ private:
   };
   
   uint32_t GetChanges() const;  
+  bool IsChanged() const override;
 
   //(*Handlers(EditShortcutDlgDialog)
   void OnOk(wxCommandEvent& event);
-  void OnCancel(wxCommandEvent &event);
-  void OnClose(wxCloseEvent &event);  
   //*)
 
   //(*Identifiers(EditShortcutDlgDialog)
