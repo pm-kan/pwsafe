@@ -512,8 +512,10 @@ void PasswordSafeSearch::DoToolBarFindReport(int controlId)
   report.EndReport();
   
   ShowModalAndGetResult<ViewReportDlg>(wxGetTopLevelParent(this), &report);
-  // set back toggle
-  ToggleTool(controlId, false);
+  if (!IsCloseInProgress()) {
+    // set back toggle
+    ToggleTool(controlId, false);
+  }
 }
 
 /**

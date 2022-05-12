@@ -528,6 +528,11 @@ void PasswordSafeFrame::OnViewAttachment(wxCommandEvent& WXUNUSED(evt))
     return;
   }
 
+  CallAfter(&PasswordSafeFrame::DoViewAttachment, item);
+}
+
+void PasswordSafeFrame::DoViewAttachment(CItemData* item)
+{
   ASSERT(m_core.HasAtt(item->GetAttUUID()));
 
   CItemAtt itemAttachment = m_core.GetAtt(item->GetAttUUID());

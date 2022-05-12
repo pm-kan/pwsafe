@@ -747,6 +747,7 @@ private:
   void DoPreferencesClick();
   void DoSynchronize(wxString filename);
   void DoCompare();
+  void DoViewAttachment(CItemData* item);
 
 #ifndef NO_YUBI
   void DoYubikeyMngClick();
