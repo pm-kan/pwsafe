@@ -3043,7 +3043,7 @@ int PasswordSafeFrame::Enter(wxDialog* dialog)
 
 void PasswordSafeFrame::Exit(wxDialog* dialog)
 {
-  // modal dilaogs should be closed in rewerse show order
+  // modal dilaogs should be closed in reverse show order
   if (!m_shownDialogs.empty() && m_shownDialogs.back() == dialog) {
     m_shownDialogs.pop_back();
   }

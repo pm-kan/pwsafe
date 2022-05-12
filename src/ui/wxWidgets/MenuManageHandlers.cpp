@@ -131,7 +131,9 @@ void PasswordSafeFrame::DoPreferencesClick()
       }
     }
   }
-  SetFocus();
+  if (!IsCloseInProgress()) {
+    SetFocus();
+  }
 }
 
 /*

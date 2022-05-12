@@ -410,7 +410,7 @@ void PasswordSafeFrame::DoEditFilter()
 
     int rc = ShowModalAndGetResult<SetFiltersDlg>(this, &filters, &CurrentFilter(), &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, bCanHaveAttachments, &sMediaTypes);;
   
-    if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled)) {
+    if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled && !IsCloseInProgress())) {
       // User can apply the filter in SetFiltersDlg and then press Cancel button
       // and afterwards process changes, update only on OK button and continue with actualized version
       if(rc == wxID_OK) {
