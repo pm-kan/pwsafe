@@ -70,7 +70,7 @@ private:
   void ItemFieldsToDialog();
   void SetValidators();
   void UpdateControls();
-  bool SyncAndQueryCancel(bool showDialog);
+  bool SyncAndQueryCancel(bool showDialog) override;
 
   enum Changes : uint32_t {
     None = 0,
