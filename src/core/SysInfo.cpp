@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -35,10 +35,6 @@ SysInfo::SysInfo()
   m_ProcessID = pws_os::getprocessid();
 }
 
-bool SysInfo::IsUnderU3()
-{
-  return !pws_os::getenv("U3_ENV_VERSION", false).empty();
-}
 
 bool SysInfo::IsUnderPw2go()
 {

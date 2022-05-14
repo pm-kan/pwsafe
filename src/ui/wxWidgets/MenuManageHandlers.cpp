@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -172,16 +172,6 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& WXUNUSED(evt))
   //create a copy to avoid multiple conversions to StringX
   const StringX backupfile(tostringx(wxbf));
 
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
-
   if (!backupfile.empty()) {  //i.e. if user didn't cancel
     if (m_core.WriteFile(backupfile, m_core.GetReadFileVersion(),
                          false) == PWScore::CANT_OPEN_FILE) {
@@ -223,16 +213,6 @@ void PasswordSafeFrame::DoRestoreSafe()
                                  this);
   if (wxbf.empty())
     return;
-
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
 
   DestroyWrapper<SafeCombinationPromptDlg> pwdprompt(this, m_core, wxbf, false);
   if (pwdprompt.Get()->ShowModal() == wxID_OK) {

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -246,8 +246,6 @@ public:
                      const bool &bDoAutotype);
   BOOL SendEmail(const CString &cs_email);
   void SetInitialDatabaseDisplay();
-  void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
-  bool ExitRequested() const {return m_inExit;}
   void AutoResizeColumns();
   void ResetIdleLockCounter(UINT event = WM_SIZE); // default arg always resets
   bool ClearClipboardData() {return m_clipboard.ClearCBData();}
@@ -676,6 +674,7 @@ public:
   afx_msg void OnPasswordSafeWebsite();
   afx_msg void OnBrowse();
   afx_msg void OnBrowsePlus();
+  afx_msg void OnBrowseAlt();
   afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
@@ -879,7 +878,6 @@ private:
 
   StringX m_sxOriginalGroup;                 // Needed when doing recursive deletions of groups
 
-  bool m_inExit; // help U3ExitNow
   std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
   StringX m_savedDBprefs;                 // used across minimize/restore events
 
@@ -919,7 +917,7 @@ private:
   void SetupSpecialShortcuts();
   void UpdateEditViewAccelerator(bool isRO);
   bool ProcessLanguageMenu(CMenu *pPopupMenu);
-  void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
+  void DoBrowse(bool bDoAutotype, bool bSendEmail, bool bForceAlt);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);

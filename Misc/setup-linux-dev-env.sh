@@ -75,16 +75,13 @@ case "$DISTRO" in
             $LIBWXDEV libxerces-c-dev libxt-dev libxtst-dev \
             libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip \
             libmagic-dev
-        # ? Do we still need this ?
-        #cd /usr/src/gtest
-        #mkdir build
-        #cd build
-        #cmake ..
+        # dpkg-sig is nice-to-have, not available on debian testing?
+        apt-get install -qy dpkg-sig || (echo "dpkg-sig isn't mandatory"; true)
     ;;
     fedora)
         dnf -y install cmake file-devel gcc-c++ git gtest-devel libXt-devel libXtst-devel \
         libcurl-devel libuuid-devel libyubikey-devel \
-        make openssl-devel rpmdevtools wxGTK3-devel xerces-c-devel \
+        make openssl-devel rpmdevtools rpm-sign wxGTK3-devel xerces-c-devel \
         ykpers-devel qrencode-devel
     ;;
     *) die 10 "Don't know how to setup $DISTRO release $RELEASE (yet)."

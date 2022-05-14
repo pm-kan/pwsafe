@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -806,14 +806,6 @@ void CWZSelectDB::OnOpenFileBrowser()
     fd.m_ofn.lpstrInitialDir = dir.c_str();
 
   INT_PTR rc = fd.DoModal();
-
-  if (m_pWZPSH->WZPSHExitRequested()) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
 
   if (rc == IDOK) {
     m_filespec = fd.GetPathName();

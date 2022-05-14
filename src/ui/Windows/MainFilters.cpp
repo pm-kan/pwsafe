@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -356,13 +356,6 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
     rc = fd.DoModal();
 
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return;
-    }
     if (rc == IDOK) {
       cs_newfile = fd.GetPathName();
       break;
@@ -422,13 +415,6 @@ void DboxMain::ImportFilters()
 
   INT_PTR rc = fd.DoModal();
 
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
   if (rc == IDCANCEL)
     return;
 

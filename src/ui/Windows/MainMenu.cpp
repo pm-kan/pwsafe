@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -922,10 +922,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
       // Add actions in order
       if (bAddURL && !pci->IsURLEmail(pbci)) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_BROWSEURL, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
+        bool altDefined = pci->GetURL().find(L"[alt]") != StringX::npos;
+        if (!altDefined) {
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURL, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
+          if (!PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty())
+            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLALT, tc_dummy);
+        }
       }
 
       if (bAddSendEmail) {
@@ -1587,6 +1590,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     if (!bUseURL) {
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
+      pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLALT, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
     }
 

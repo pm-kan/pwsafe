@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -305,13 +305,6 @@ void CPasskeyEntry::OnCreateDb()
 
     rc = fd.DoModal();
 
-    if (((DboxMain*)GetParent())->ExitRequested()) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return;
-    }
     if (rc == IDOK) {
       newfile = fd.GetPathName();
       break;
@@ -551,13 +544,6 @@ void CPasskeyEntry::OnOpenFileBrowser()
 
   INT_PTR rc = fd.DoModal();
 
-  if (((DboxMain*)GetParent())->ExitRequested()) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
   if (rc == IDOK) {
     if (!pws_os::IsWindowsVistaOrGreater()) {
       // Read-only checkbox only available up to Windows XP

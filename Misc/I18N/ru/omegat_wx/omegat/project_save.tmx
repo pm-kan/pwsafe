@@ -3819,10 +3819,10 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Copyright (c) 2003-2021 Rony Shapiro</seg>
+        <seg>Copyright (c) 2003-2022 Rony Shapiro</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150105T162645Z" creationid="pm_kan" creationdate="20150105T162645Z">
-        <seg>Copyright (c) 2003-2021 Rony Shapiro</seg>
+        <seg>Copyright (c) 2003-2022 Rony Shapiro</seg>
       </tuv>
     </tu>
     <tu>
@@ -13056,16 +13056,6 @@ bypasses the security provided by this program.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T093045Z">
         <seg>Заполните поля для добавления нового элемента.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>To get an unlimited version for the U3 platform, please visit http://software.u3.com
-Note: Saving this database will result in the removal of unread entries!</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133544Z">
-        <seg>Для получения полноценной версии для платформы U3 посетите http://software.u3.com.
-Примечание: Сохранение контейнера приведёт к удалению непрочитанных элементов!</seg>
       </tuv>
     </tu>
     <tu>

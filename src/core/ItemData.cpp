@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -1949,8 +1949,9 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
     }
 
 #ifdef PWS_BIG_ENDIAN
-    unsigned char buf[len] = {0};
-
+    unsigned char buf[len];
+    memset(buf, 0, len*sizeof(buf[0]));
+	  
     switch(type) {
       case CTIME:
       case PMTIME:

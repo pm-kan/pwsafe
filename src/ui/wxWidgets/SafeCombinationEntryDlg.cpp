@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -610,6 +610,9 @@ void SafeCombinationEntryDlg::DoNewDbClick()
 void SafeCombinationEntryDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+
+  // For the validation process, put the full file path name back into the combo box.
+  m_filenameCB->ChangeValue(m_filename);
 
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
