@@ -376,6 +376,14 @@ void PasswordSafeFrame::OnClearClipboardClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnCopyPasswordClick(wxCommandEvent& evt)
 {
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyPassword(*item);
+}
+
+void PasswordSafeFrame::DoCopyPassword(CItemData &item)
+{
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::DontAskQuestion)) {
     wxRichMessageDialog dialog(this, 
       _("Pressing OK will copy the password of the selected item\nto the clipboard. The clipboard will be securely cleared\nwhen Password Safe is closed.\n\nPressing Cancel stops the password from being copied."), 
@@ -390,15 +398,7 @@ void PasswordSafeFrame::OnCopyPasswordClick(wxCommandEvent& evt)
 
     PWSprefs::GetInstance()->SetPref(PWSprefs::DontAskQuestion, !dialog.IsCheckBoxChecked());
   }
-
-  CItemData rueItem;
-  CItemData* item = GetSelectedEntry(evt, rueItem);
-  if (item != nullptr)
-    DoCopyPassword(*item);
-}
-
-void PasswordSafeFrame::DoCopyPassword(CItemData &item)
-{
+  
   if (!item.IsDependent())
     Clipboard::GetInstance()->SetData(item.GetPassword());
   else {
